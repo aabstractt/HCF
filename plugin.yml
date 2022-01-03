@@ -1,0 +1,5 @@
+name: HCF
+author: Abstract
+version: 1.0
+api: 4.0.0
+main: hcf\HCF

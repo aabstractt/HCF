@@ -1,0 +1,5 @@
+COMMAND_FACTION_ATTEMPT_CREATE: '&cYou must leave you current faction before you create one.'
+FACTION_NAME_TOO_SHORT: '&cThe name must be at least {%0} characters.'
+FACTION_NAME_TOO_LONG: '&cThe name cannot be longer than {%0} characters'
+FACTION_ALREADY_EXISTS: '&cThat name is already in use.'
+COMMAND_FACTION_ACTION_COOLDOWN: '&eYou must wait 1 minute between creating and disbanding a faction.'

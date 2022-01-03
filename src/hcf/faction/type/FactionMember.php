@@ -39,30 +39,6 @@ class FactionMember {
     }
 
     /**
-     * @param FactionRank $factionRank
-     *
-     * @return bool
-     */
-    public function isAtLeast(FactionRank $factionRank): bool {
-        return $this->factionRank->ordinal() >= $factionRank->ordinal();
-    }
-
-    /**
-     * @return string
-     */
-    public function getStars(): string {
-        if ($this->factionRank->ordinal() === FactionRank::LEADER()->ordinal() || $this->factionRank->ordinal() === FactionRank::COLEADER()->ordinal()) {
-            return '**';
-        }
-
-        if ($this->factionRank->ordinal() === FactionRank::CAPTAIN()->ordinal()) {
-            return '*';
-        }
-
-        return '';
-    }
-
-    /**
      * @param mixed... $data
      *
      * @return FactionMember

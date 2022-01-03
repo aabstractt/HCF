@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace hcf\faction\command\argument;
+namespace hcf\faction\command\argument\player;
 
 use hcf\api\Argument;
 use hcf\faction\async\SaveFactionAsync;
@@ -17,7 +17,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-class CreateArgument extends Argument {
+class FactionCreateArgument extends Argument {
 
     /**
      * @param CommandSender $sender

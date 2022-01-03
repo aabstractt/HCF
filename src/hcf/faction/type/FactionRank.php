@@ -25,6 +25,30 @@ class FactionRank {
     }
 
     /**
+     * @param FactionRank $factionRank
+     *
+     * @return bool
+     */
+    public function isAtLeast(FactionRank $factionRank): bool {
+        return $this->ordinal() >= $factionRank->ordinal();
+    }
+
+    /**
+     * @return string
+     */
+    public function getStars(): string {
+        if ($this->isAtLeast(FactionRank::COLEADER()))  {
+            return '**';
+        }
+
+        if ($this->ordinal() === FactionRank::CAPTAIN()->ordinal()) {
+            return '*';
+        }
+
+        return '';
+    }
+
+    /**
      * @param int $value
      *
      * @return FactionRank

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace hcf\faction\command;
 
 use hcf\api\Command;
-use hcf\faction\command\argument\CreateArgument;
+use hcf\faction\command\argument\player\FactionCreateArgument;
 use pocketmine\lang\Translatable;
 
 class FactionCommand extends Command {
@@ -20,7 +20,7 @@ class FactionCommand extends Command {
         parent::__construct($name, $description, $usageMessage, $aliases);
 
         $this->addArgument(
-            new CreateArgument('create')
+            new FactionCreateArgument('create')
         );
     }
 }

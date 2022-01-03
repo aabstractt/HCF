@@ -37,6 +37,15 @@ class SessionFactory {
     }
 
     /**
+     * @param Player $player
+     */
+    public function closePlayerSession(Player $player): void {
+        if (isset($this->sessions[strtolower($player->getName())])) {
+            unset($this->sessions[strtolower($player->getName())]);
+        }
+    }
+
+    /**
      * @param string $name
      *
      * @return Session|null

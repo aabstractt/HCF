@@ -7,6 +7,7 @@ namespace hcf\faction\command\argument\player;
 use hcf\api\Argument;
 use hcf\faction\async\SaveFactionAsync;
 use hcf\faction\type\FactionMember;
+use hcf\faction\type\FactionRank;
 use hcf\faction\type\PlayerFaction;
 use hcf\factory\FactionFactory;
 use hcf\HCF;
@@ -61,26 +62,22 @@ class FactionCreateArgument extends Argument {
             return;
         }
 
-        if (FactionFactory::getInstance()->getPlayerFaction($args[0]) !== null) {
+        if (FactionFactory::getInstance()->getFactionName($args[0]) !== null) {
             $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_ALREADY_EXISTS', $args[0]));
 
             return;
         }
 
-        TaskUtils::runAsync(new SaveFactionAsync(serialize([$args[0], 1.0])), function (SaveFactionAsync $query) use ($args, $session, $sender): void {
+        TaskUtils::runAsync(new SaveFactionAsync(serialize([$args[0], 1.1])), function (SaveFactionAsync $query) use ($args, $session, $sender): void {
             if (!is_int($rowId = $query->getResult())) {
                 $sender->sendMessage(TextFormat::RED . 'An error was occurred...');
 
                 return;
             }
 
+            FactionFactory::getInstance()->joinFaction($session, new PlayerFaction($rowId, $args[0], [$session->getXuid() => FactionMember::valueOf($session->getXuid(), $session->getName())]), FactionRank::LEADER());
+
             $session->setLastFactionEdit(HCF::dateNow());
-
-            $session->setFaction($faction = new PlayerFaction($rowId, $args[0], [$session->getXuid() => FactionMember::valueOf($session->getXuid(), $session->getName())]));
-
-            $faction->findLeader();
-
-            $session->save();
         });
     }
 }

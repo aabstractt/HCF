@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace hcf\faction\type;
 
 use hcf\faction\Faction;
+use hcf\factory\FactionFactory;
 use pocketmine\plugin\PluginException;
 
 class PlayerFaction extends Faction {
@@ -18,10 +19,9 @@ class PlayerFaction extends Faction {
      * @param array       $members
      * @param int         $balance
      * @param int         $points
-     * @param float       $dtr
-     * @param string|null $startRegen
-     * @param string|null $lastRegen
-     * @param bool        $regenerating
+     * @param float       $deathsUntilRaidable
+     * @param int         $regenCooldown
+     * @param float       $lastDtrUpdate
      * @param array       $allies
      * @param array       $requestedAllies
      * @param array       $invited
@@ -36,10 +36,9 @@ class PlayerFaction extends Faction {
         array $members = [],
         int $balance = 0,
         int $points = 0,
-        float $dtr = 0.0,
-        private ?string $startRegen = null,
-        private ?string $lastRegen = null,
-        private bool $regenerating = false,
+        float $deathsUntilRaidable = 0.0,
+        private int $regenCooldown = 0,
+        private float $lastDtrUpdate = 0,
         private array $allies = [],
         private array $requestedAllies = [],
         private array $invited = [],
@@ -48,43 +47,7 @@ class PlayerFaction extends Faction {
         private int $lives = 0,
         private ?string $announcement = null
     ) {
-        parent::__construct($rowId, $name, $members, $balance, $points, $dtr);
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getStartRegen(): ?string {
-        return $this->startRegen;
-    }
-
-    public function startRegen(): void {
-        $this->startRegen = null;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLastRegen(): ?string {
-        return $this->lastRegen;
-    }
-
-    public function lastRegen(): void {
-        $this->lastRegen = null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRegenerating(): bool {
-        return $this->regenerating;
-    }
-
-    /**
-     * @param bool $regenerating
-     */
-    public function setRegenerating(bool $regenerating = false): void {
-        $this->regenerating = $regenerating;
+        parent::__construct($rowId, $name, $members, $balance, $points, $deathsUntilRaidable);
     }
 
     /**
@@ -177,5 +140,117 @@ class PlayerFaction extends Faction {
      */
     public function getAnnouncement(): ?string {
         return $this->announcement;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMaximumDeathsUntilRaidable(): float {
+        return count($this->getMembers()) === 1 ? 1.1 : min(FactionFactory::getMaxDtr(), count($this->getMembers()) * FactionFactory::getDtrPerPlayer());
+    }
+
+    /**
+     * @param bool $updateLastCheck
+     *
+     * @return float
+     */
+    public function getDeathsUntilRaidable(bool $updateLastCheck = false): float {
+        if ($updateLastCheck) {
+            $this->updateDeathsUntilRaidable();
+        }
+
+        return $this->deathsUntilRaidable;
+    }
+
+    public function updateDeathsUntilRaidable(): void {
+        if ($this->getRegenStatus() !== FactionFactory::STATUS_REGENERATING) {
+            return;
+        }
+
+        $timePassed = ($now = time()) - $this->getLastDtrUpdate();
+
+        if ($timePassed >= ($dtrUpdate = FactionFactory::getDtrUpdate())) {
+            $remainder = $timePassed % $dtrUpdate;
+
+            $multiplier = ($timePassed + $remainder) / $dtrUpdate;
+
+            $increase = $multiplier * FactionFactory::getDtrIncrementBetweenUpdate();
+
+            $this->setDeathsUntilRaidable($this->getDeathsUntilRaidable() + $increase);
+
+            $this->lastDtrUpdate = $now;
+
+            $this->save();
+        }
+    }
+
+    /**
+     * @param float $deathsUntilRaidable
+     * @param bool  $limit
+     *
+     * @return float
+     */
+    public function setDeathsUntilRaidable(float $deathsUntilRaidable, bool $limit = true): float {
+        $deathsUntilRaidable = round($deathsUntilRaidable * 100.0, 1) / 100.0;
+
+        if ($limit) {
+            $deathsUntilRaidable = min($deathsUntilRaidable, $this->getMaximumDeathsUntilRaidable());
+        }
+
+        if (abs($deathsUntilRaidable - $this->getDeathsUntilRaidable()) !== 0.0) {
+            $deathsUntilRaidable = round($deathsUntilRaidable * 100.0) / 100.0;
+
+            if ($deathsUntilRaidable <= 0) {
+                echo 'Raidable' . PHP_EOL;
+
+                // Faction is now raidable.
+            }
+
+            $this->lastDtrUpdate = time();
+
+            $this->deathsUntilRaidable = $deathsUntilRaidable;
+
+            $this->save();
+        }
+
+        return $this->deathsUntilRaidable;
+    }
+
+    /**
+     * @param int $time
+     */
+    public function setRemainingRegenerationTime(int $time): void {
+        $this->regenCooldown = ($now = time()) + $time;
+
+        $this->lastDtrUpdate = $now + (FactionFactory::getDtrUpdate() * 2);
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemainingRegenerationTime(): int {
+        return ($this->regenCooldown ?? 0) === 0 ? 0 : $this->regenCooldown - time();
+    }
+
+    /**
+     * @return int
+     */
+    public function getRegenStatus(): int {
+        if ($this->getRemainingRegenerationTime() > 0) {
+            return FactionFactory::STATUS_PAUSED;
+        }
+
+        if ($this->getMaximumDeathsUntilRaidable() > $this->getDeathsUntilRaidable()) {
+            return FactionFactory::STATUS_REGENERATING;
+        }
+
+        return FactionFactory::STATUS_FULL;
+    }
+
+    /**
+     * @return float
+     */
+    private function getLastDtrUpdate(): float {
+        return $this->lastDtrUpdate;
     }
 }

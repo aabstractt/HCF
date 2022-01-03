@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace hcf\faction\command;
 
 use hcf\api\Command;
+use hcf\faction\command\argument\member\FactionLeaveArgument;
 use hcf\faction\command\argument\player\FactionCreateArgument;
+use hcf\faction\command\argument\player\FactionWhoArgument;
 use pocketmine\lang\Translatable;
 
 class FactionCommand extends Command {
@@ -20,7 +22,9 @@ class FactionCommand extends Command {
         parent::__construct($name, $description, $usageMessage, $aliases);
 
         $this->addArgument(
-            new FactionCreateArgument('create')
+            new FactionCreateArgument('create'),
+            new FactionLeaveArgument('leave'),
+            new FactionWhoArgument('who')
         );
     }
 }

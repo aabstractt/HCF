@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace hcf\faction;
 
+use hcf\faction\async\SaveFactionAsync;
 use hcf\faction\type\FactionMember;
+use hcf\TaskUtils;
+use hcf\utils\Serializable;
+use pocketmine\Server;
 
-class Faction {
+class Faction extends Serializable {
 
     /**
-     * @param string $name
-     * @param int    $rowId
-     * @param array  $members
-     * @param int    $balance
-     * @param int    $points
-     * @param float  $dtr
+     * @param int             $rowId
+     * @param string          $name
+     * @param FactionMember[] $members
+     * @param int             $balance
+     * @param int             $points
+     * @param float           $deathsUntilRaidable
      */
     public function __construct(
         protected int $rowId,
@@ -22,7 +26,7 @@ class Faction {
         protected array $members = [],
         protected int $balance = 0,
         protected int $points = 0,
-        protected float $dtr = 0.0
+        protected float $deathsUntilRaidable = 0.0
     ) {}
 
     /**
@@ -40,7 +44,7 @@ class Faction {
     }
 
     /**
-     * @return array
+     * @return FactionMember[]
      */
     public function getMembers(): array {
         return $this->members;
@@ -48,8 +52,6 @@ class Faction {
 
     /**
      * @param FactionMember $factionMember
-     *
-     * @return void
      */
     public function addMember(FactionMember $factionMember): void {
         if (!$this->isMember($factionMember->getXuid())) {
@@ -60,16 +62,14 @@ class Faction {
     }
 
     /**
-     * @param FactionMember $factionMember
-     *
-     * @return void
+     * @param string $xuid
      */
-    public function removeMember(FactionMember $factionMember): void {
-        if (!$this->isMember($factionMember->getXuid())) {
+    public function removeMember(string $xuid): void {
+        if (!$this->isMember($xuid)) {
             return;
         }
 
-        unset($this->members[$factionMember->getXuid()]);
+        unset($this->members[$xuid]);
     }
 
     /**
@@ -99,8 +99,6 @@ class Faction {
 
     /**
      * @param int $increase
-     *
-     * @return void
      */
     public function increaseBalance(int $increase = 1): void {
         $this->balance += $increase;
@@ -108,18 +106,9 @@ class Faction {
 
     /**
      * @param int $decrease
-     *
-     * @return void
      */
     public function decreaseBalance(int $decrease = 1): void {
         $this->balance += $decrease;
-    }
-
-    /**
-     * @return float
-     */
-    public function getDtr(): float {
-        return $this->dtr;
     }
 
     /**
@@ -131,8 +120,6 @@ class Faction {
 
     /**
      * @param int $increase
-     *
-     * @return void
      */
     public function increasePoints(int $increase = 1): void {
         $this->points += $increase;
@@ -140,10 +127,39 @@ class Faction {
 
     /**
      * @param int $decrease
-     *
-     * @return void
      */
     public function decreasePoints(int $decrease = 1): void {
         $this->points -= $decrease;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function broadcastMessage(string $message): void {
+        foreach ($this->members as $factionMember) {
+            if (($player = Server::getInstance()->getPlayerExact($factionMember->getName())) === null) {
+                continue;
+            }
+
+            $player->sendMessage($message);
+        }
+    }
+
+    public function save(): void {
+        TaskUtils::runAsync(new SaveFactionAsync($this->serializeString()));
+    }
+
+    /**
+     * @param array $merge
+     * @param bool  $static
+     *
+     * @return string
+     */
+    public function serializeString(array $merge = [], bool $static = false): string {
+        $serialized = $this->serialize($merge, $static);
+
+        unset($serialized['members'], $serialized['leader']);
+
+        return serialize($serialized);
     }
 }

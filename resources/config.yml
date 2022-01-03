@@ -3,3 +3,18 @@ mysql:
   username: root
   password: ''
   dbname: 'factions'
+
+factions:
+  min-name: 3
+  max-name: 16
+  max-members: 10
+  max-allies: 0
+  max-claims-per-fac: 1
+  dtr-freeze: 1 # MINUTES dtr freeze
+  dtr-regen-time: 5 #SECONDS dtr to regen #dtr-increment
+  dtr-increment: 0.1
+  dtr-per-player: 1.1
+  max-dtr: 6.5
+
+  claim_distance: 50
+  amount_per_block: 5.0

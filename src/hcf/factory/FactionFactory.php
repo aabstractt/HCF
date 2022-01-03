@@ -11,13 +11,28 @@ use hcf\faction\type\FactionMember;
 use hcf\faction\type\FactionRank;
 use hcf\faction\type\PlayerFaction;
 use hcf\HCF;
+use hcf\Placeholders;
+use hcf\session\Session;
 use hcf\TaskUtils;
+use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\world\Position;
 
 class FactionFactory {
 
     use SingletonTrait;
+
+    /** @var int */
+    public const STATUS_PAUSED = 1;
+    public const STATUS_REGENERATING = 2;
+    public const STATUS_FULL = 3;
+
+    /** @var string[] */
+    public static array $regenStatus = [
+        self::STATUS_PAUSED => '{%0}',
+        self::STATUS_REGENERATING => 'Regenerating',
+        self::STATUS_FULL => 'Full'
+    ];
 
     /** @var ClaimZone[] */
     private array $claims = [];
@@ -47,10 +62,9 @@ class FactionFactory {
                     $members,
                     $factionData['balance'],
                     $factionData['points'],
-                    $factionData['dtr'],
-                    $factionData['startRegen'] === '' ? null : $factionData['startRegen'],
-                    $factionData['lastRegen'] === '' ? null : $factionData['lastRegen'],
-                    $factionData['regenerating'] === 1,
+                    $factionData['deathsUntilRaidable'],
+                    $factionData['regenCooldown'],
+                    $factionData['lastDtrUpdate'],
                     $factionData['allies'] ?? [],
                     $factionData['requestedAllies'] ?? [],
                     $factionData['invited'] ?? [],
@@ -65,7 +79,7 @@ class FactionFactory {
                 $this->factionNames[$faction->getName()] = $faction->getRowId();
                 $this->factions[$faction->getRowId()] = $faction;
 
-                foreach ($factionData['claims'] as $claimData) {
+                foreach ($factionData['claims'] ?? [] as $claimData) {
                     $this->claims[$claimData['rowId']] = ClaimZone::deserialize($claimData);
                 }
             }
@@ -73,11 +87,48 @@ class FactionFactory {
     }
 
     /**
+     * @param Session          $session
+     * @param PlayerFaction    $faction
+     * @param FactionRank|null $factionRank
+     *
+     * @return void
+     */
+    public function joinFaction(Session $session, PlayerFaction $faction, FactionRank $factionRank = null): void {
+        $session->setFaction($faction);
+        $session->setFactionRank($factionRank ?? FactionRank::MEMBER());
+
+        $session->save();
+
+        $faction->broadcastMessage(Placeholders::replacePlaceholders('PLAYER_JOINED_FACTION', $session->getName()));
+
+        if (!isset($this->factions[$faction->getRowId()])) {
+            $faction->findLeader();
+
+            $this->factions[$faction->getRowId()] = $faction;
+
+            $this->factionNames[$faction->getName()] = $faction->getRowId();
+
+            $faction->save();
+        }
+    }
+
+    /**
+     * @param Player $player
+     *
+     * @return PlayerFaction|null
+     */
+    public function getPlayerFaction(Player $player): ?PlayerFaction {
+        $filter = array_filter($this->factions, fn(PlayerFaction $faction) => $faction->isMember($player->getXuid()));
+
+        return $filter[array_key_first($filter)] ?? null;
+    }
+
+    /**
      * @param string $name
      *
      * @return PlayerFaction|null
      */
-    public function getPlayerFaction(string $name): ?PlayerFaction {
+    public function getFactionName(string $name): ?PlayerFaction {
         return $this->factions[$this->factionNames[$name] ?? -1] ?? null;
     }
 
@@ -110,14 +161,63 @@ class FactionFactory {
     /**
      * @return int
      */
-    public static function getFactionNameMin(): int {
-        return is_int($value = HCF::getInstance()->getConfig()->getNested('faction.name-min', 3)) ? $value : 3;
+    final public static function getFactionNameMin(): int {
+        return HCF::getInstance()->getInt('factions.min-name');
     }
 
     /**
      * @return int
      */
-    public static function getFactionNameMax(): int {
-        return is_int($value = HCF::getInstance()->getConfig()->getNested('faction.name-max', 16)) ? $value : 16;
+    final public static function getFactionNameMax(): int {
+        return HCF::getInstance()->getInt('factions.max-name');
+    }
+
+    /**
+     * @return int
+     */
+    final public static function getMaxMembers(): int {
+        return HCF::getInstance()->getInt('factions.max-members');
+    }
+
+    /**
+     * @return int
+     */
+    final public static function getMaxAllies(): int {
+        return HCF::getInstance()->getInt('factions.max-allies');
+    }
+
+    /**
+     * @return float
+     */
+    final public static function getMaxDtr(): float {
+        return HCF::getInstance()->getFloat('factions.max-dtr');
+    }
+
+    /**
+     * @return float
+     */
+    final public static function getDtrPerPlayer(): float {
+        return HCF::getInstance()->getFloat('factions.dtr-per-player');
+    }
+
+    /**
+     * @return int
+     */
+    final public static function getDtrUpdate(): int {
+        return HCF::getInstance()->getInt('factions.dtr-regen-time');
+    }
+
+    /**
+     * @return int
+     */
+    final public static function getDtrFreeze(): int {
+        return HCF::getInstance()->getInt('factions.dtr-freeze');
+    }
+
+    /**
+     * @return float
+     */
+    final public static function getDtrIncrementBetweenUpdate(): float {
+        return HCF::getInstance()->getFloat('factions.dtr-increment');
     }
 }

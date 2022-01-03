@@ -20,11 +20,11 @@ class SaveFactionAsync extends QueryAsyncTask {
      * @param MySQL $mysqli
      */
     public function query(MySQL $mysqli): void {
-        $serialized = (array) unserialize($this->serialized);
+        $s = (array) unserialize($this->serialized);
 
-        if (($rowId = $serialized['rowId'] ?? -1) === -1) {
-            $mysqli->prepareStatement("INSERT INTO player_factions (name, dtr) VALUES (?, ?)");
-            $mysqli->set(...$serialized);
+        if (($s['rowId'] ?? -1) === -1) {
+            $mysqli->prepareStatement("INSERT INTO player_factions (name, deathsUntilRaidable) VALUES (?, ?)");
+            $mysqli->set(...$s);
 
             $stmt = $mysqli->executeStatement();
 
@@ -35,12 +35,9 @@ class SaveFactionAsync extends QueryAsyncTask {
             return;
         }
 
-        unset($serialized['rowId']);
+        $mysqli->prepareStatement("UPDATE player_factions SET name = ?, lastRename = ?, deathsUntilRaidable = ?, regenCooldown = ?, lastDtrUpdate = ?, open = ?, friendlyFire = ?, lives = ?, balance = ?, points = ?, announcement = ? WHERE rowId = ?");
 
-        $mysqli->prepareStatement("UPDATE player_factions SET name = ?, lastRegen = ?, dtr = ?, startRegen = ?, lastRegen = ?, regenerating = ?, open = ?, friendlyFire = ?, lives = ?, balance = ?, points = ?, announcement = ? WHERE rowId = ?");
-
-        $mysqli->set(...$serialized);
-        $mysqli->set($rowId);
+        $mysqli->set($s['name'], $s['lastRename'] ?? '', $s['deathsUntilRaidable'], $s['regenCooldown'], $s['lastDtrUpdate'], $s['open'], $s['friendlyFire'], $s['lives'], $s['balance'], $s['points'], $s['announcement'], $s['rowId']);
 
         $mysqli->executeStatement()->close();
     }

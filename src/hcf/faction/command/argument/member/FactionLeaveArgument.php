@@ -18,9 +18,10 @@ class FactionLeaveArgument extends Argument {
     /**
      * @param CommandSender $sender
      * @param string        $commandLabel
+     * @param string        $argumentLabel
      * @param array         $args
      */
-    public function execute(CommandSender $sender, string $commandLabel, array $args): void {
+    public function run(CommandSender $sender, string $commandLabel, string $argumentLabel, array $args): void {
         if (!$sender instanceof Player) {
             $sender->sendMessage(TextFormat::RED . 'Run this command in-game');
 

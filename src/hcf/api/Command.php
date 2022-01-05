@@ -13,6 +13,11 @@ abstract class Command extends \pocketmine\command\Command {
     /** @var Argument[] */
     private array $arguments = [];
 
+    /**
+     * @param Argument ...$arguments
+     *
+     * @return void
+     */
     protected function addArgument(Argument ...$arguments): void {
         foreach ($arguments as $argument) {
             $this->arguments[$argument->getName()] = $argument;
@@ -25,7 +30,15 @@ abstract class Command extends \pocketmine\command\Command {
      * @return Argument|null
      */
     protected function getArgument(string $label): ?Argument {
-        return $this->arguments[strtolower($label)] ?? null;
+        $label = strtolower($label);
+
+        if (($argument = $this->arguments[$label] ?? null) === null) {
+            $filter = array_filter($this->arguments, fn(Argument $argument) => in_array($label, $argument->getAliases(), true));
+
+            $argument = $filter[array_key_first($filter)] ?? null;
+        }
+
+        return $argument;
     }
 
     /**
@@ -44,18 +57,18 @@ abstract class Command extends \pocketmine\command\Command {
             throw new InvalidCommandSyntaxException();
         }
 
-        $command = $this->getArgument($name);
+        $argument = $this->getArgument($name);
 
-        if ($command === null) {
+        if ($argument === null) {
             throw new InvalidCommandSyntaxException();
         }
 
-        if (($permission = $command->getPermission()) !== null && !$sender->hasPermission($permission)) {
+        if (($permission = $argument->getPermission()) !== null && !$sender->hasPermission($permission)) {
             $sender->sendMessage(TextFormat::RED . 'You don\'t have permissions to use this command!');
 
             return;
         }
 
-        $command->execute($sender, $commandLabel, $args);
+        $argument->run($sender, $commandLabel, $name, $args);
     }
 }

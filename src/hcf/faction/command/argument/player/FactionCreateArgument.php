@@ -6,10 +6,10 @@ namespace hcf\faction\command\argument\player;
 
 use hcf\api\Argument;
 use hcf\faction\async\SaveFactionAsync;
+use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionMember;
 use hcf\faction\type\FactionRank;
 use hcf\faction\type\PlayerFaction;
-use hcf\factory\FactionFactory;
 use hcf\HCF;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;

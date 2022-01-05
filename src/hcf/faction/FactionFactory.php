@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace hcf\factory;
+namespace hcf\faction;
 
 use hcf\faction\async\LoadFactionsAsync;
-use hcf\faction\ClaimZone;
-use hcf\faction\Faction;
 use hcf\faction\type\FactionMember;
 use hcf\faction\type\FactionRank;
 use hcf\faction\type\PlayerFaction;

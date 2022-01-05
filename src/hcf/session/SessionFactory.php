@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace hcf\session;
 
+use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
-use hcf\factory\FactionFactory;
 use hcf\session\async\LoadSessionAsync;
 use hcf\TaskUtils;
 use pocketmine\player\Player;

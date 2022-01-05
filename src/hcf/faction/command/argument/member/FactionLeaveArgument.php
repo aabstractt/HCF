@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace hcf\faction\command\argument\member;
 
 use hcf\api\Argument;
+use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
-use hcf\factory\FactionFactory;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;

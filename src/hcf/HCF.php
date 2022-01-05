@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace hcf;
 
 use hcf\faction\command\FactionCommand;
-use hcf\factory\FactionFactory;
+use hcf\faction\FactionFactory;
 use hcf\listener\PlayerJoinListener;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;

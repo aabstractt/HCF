@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace hcf\faction\type;
 
 use hcf\faction\Faction;
-use hcf\factory\FactionFactory;
+use hcf\faction\FactionFactory;
 use pocketmine\plugin\PluginException;
 
 class PlayerFaction extends Faction {

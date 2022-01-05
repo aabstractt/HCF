@@ -6,10 +6,10 @@ namespace hcf\faction\command;
 
 use hcf\api\Command;
 use hcf\faction\command\argument\captain\FactionInviteArgument;
+use hcf\faction\command\argument\FactionCreateArgument;
+use hcf\faction\command\argument\FactionJoinArgument;
+use hcf\faction\command\argument\FactionWhoArgument;
 use hcf\faction\command\argument\member\FactionLeaveArgument;
-use hcf\faction\command\argument\player\FactionJoinArgument;
-use hcf\faction\command\argument\player\FactionCreateArgument;
-use hcf\faction\command\argument\player\FactionWhoArgument;
 use pocketmine\lang\Translatable;
 
 class FactionCommand extends Command {

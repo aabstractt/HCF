@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace hcf\faction\command\argument\player;
+namespace hcf\faction\command\argument;
 
 use hcf\api\Argument;
 use hcf\faction\FactionFactory;

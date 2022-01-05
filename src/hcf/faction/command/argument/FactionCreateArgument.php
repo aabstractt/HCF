@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace hcf\faction\command\argument\player;
+namespace hcf\faction\command\argument;
 
 use hcf\api\Argument;
 use hcf\faction\async\SaveFactionAsync;
 use hcf\faction\FactionFactory;
-use hcf\faction\type\FactionMember;
 use hcf\faction\type\FactionRank;
 use hcf\faction\type\PlayerFaction;
 use hcf\HCF;

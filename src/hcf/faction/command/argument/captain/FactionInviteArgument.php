@@ -29,12 +29,6 @@ class FactionInviteArgument extends Argument {
             return;
         }
 
-        if (count($args) === 0) {
-            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' invite <player>');
-
-            return;
-        }
-
         $session = SessionFactory::getInstance()->getPlayerSession($sender);
 
         if (($faction = $session->getFaction()) === null) {
@@ -45,6 +39,12 @@ class FactionInviteArgument extends Argument {
 
         if (!$session->getFactionRank()->isAtLeast(FactionRank::CAPTAIN())) {
             $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_NOT_CAPTAIN'));
+
+            return;
+        }
+
+        if (count($args) === 0) {
+            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' invite <player>');
 
             return;
         }

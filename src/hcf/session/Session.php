@@ -21,6 +21,7 @@ class Session {
      * @param string       $xuid
      * @param string       $name
      * @param FactionRank  $factionRank
+     * @param int          $balance
      * @param Faction|null $faction
      * @param string|null  $lastFactionEdit
      */
@@ -28,6 +29,7 @@ class Session {
         private string $xuid,
         private string $name,
         private FactionRank $factionRank,
+        private int $balance = 0,
         private ?Faction $faction = null,
         private ?string $lastFactionEdit = null
     ) {}
@@ -54,12 +56,12 @@ class Session {
     }
 
     /**
-     * @param FactionRank $factionRank
+     * @param FactionRank|null $factionRank
      *
      * @return void
      */
-    public function setFactionRank(FactionRank $factionRank): void {
-        $this->factionRank = $factionRank;
+    public function setFactionRank(FactionRank $factionRank = null): void {
+        $this->factionRank = $factionRank ?? FactionRank::MEMBER();
     }
 
     /**
@@ -79,7 +81,7 @@ class Session {
     /**
      * @param Faction|null $faction
      */
-    public function setFaction(?Faction $faction): void {
+    public function setFaction(?Faction $faction = null): void {
         $this->faction = $faction;
     }
 
@@ -111,6 +113,27 @@ class Session {
      */
     public function getHomeTeleport(): int {
         return $this->homeTeleport;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBalance(): int {
+        return $this->balance;
+    }
+
+    /**
+     * @param int $increase
+     */
+    public function increaseBalance(int $increase = 1): void {
+        $this->balance += $increase;
+    }
+
+    /**
+     * @param int $decrease
+     */
+    public function decreaseBalance(int $decrease = 1): void {
+        $this->balance += $decrease;
     }
 
     /**

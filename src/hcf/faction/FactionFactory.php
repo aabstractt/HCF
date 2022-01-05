@@ -11,6 +11,7 @@ use hcf\faction\type\PlayerFaction;
 use hcf\HCF;
 use hcf\Placeholders;
 use hcf\session\Session;
+use hcf\session\SessionFactory;
 use hcf\TaskUtils;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
@@ -122,6 +123,28 @@ class FactionFactory {
         }
 
         $faction->save();
+    }
+
+    /**
+     * @param Faction $faction
+     *
+     * @return void
+     */
+    public function disbandFaction(Faction $faction): void {
+        foreach ($faction->getMembers() as $member) {
+            if (($session = SessionFactory::getInstance()->getSessionName($member->getName())) === null) {
+                // TODO: Update session
+
+                continue;
+            }
+
+            $session->setFaction();
+            $session->setFactionRank();
+
+            $session->save();
+        }
+
+        // TODO: Execute DisbandFactionAsync
     }
 
     /**

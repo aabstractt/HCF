@@ -26,6 +26,10 @@ FACTION_PLAYER_LEFT: '&c{%0} has left the faction.'
 PLAYER_FACTION_LEFT: '&eYou have left your faction.'
 
 FACTION_FULL: '&cFaction {%0} is full!'
+INVALID_NUMBER: '&c{%0} is a invalid value'
+AMOUNT_MUST_BE_POSITIVE: "&cAmount must be positive."
+NOT_ENOUGH_BALANCE: "&cYou need at least &l${%0}&r&c to do this, you only have &l${%1}"
+FACTION_MEMBER_DEPOSITED: "{%0}&e has deposited &e${%1}&e into the faction balance."
 
 FACTION_WHO_PLAYER:
   - '&7&m--------------------------------------'

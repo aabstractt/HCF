@@ -6,9 +6,14 @@ namespace hcf\faction\command;
 
 use hcf\api\Command;
 use hcf\faction\command\argument\captain\FactionInviteArgument;
+use hcf\faction\command\argument\coleader\FactionKickArgument;
+use hcf\faction\command\argument\coleader\FactionSetHomeArgument;
 use hcf\faction\command\argument\FactionCreateArgument;
 use hcf\faction\command\argument\FactionJoinArgument;
 use hcf\faction\command\argument\FactionWhoArgument;
+use hcf\faction\command\argument\leader\FactionDisbandArgument;
+use hcf\faction\command\argument\member\FactionDepositArgument;
+use hcf\faction\command\argument\member\FactionHomeArgument;
 use hcf\faction\command\argument\member\FactionLeaveArgument;
 use pocketmine\lang\Translatable;
 
@@ -26,9 +31,14 @@ class FactionCommand extends Command {
         $this->addArgument(
             new FactionCreateArgument('create'),
             new FactionInviteArgument('invite'),
+            new FactionKickArgument('kick'),
+            new FactionSetHomeArgument('sethome'),
+            new FactionDisbandArgument('disband'),
+            new FactionHomeArgument('home'),
+            new FactionDepositArgument('deposit', ['d']),
             new FactionLeaveArgument('leave'),
-            new FactionJoinArgument('accept'),
-            new FactionWhoArgument('who')
+            new FactionJoinArgument('join', ['accept']),
+            new FactionWhoArgument('who', ['info', 'show'])
         );
     }
 }

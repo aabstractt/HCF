@@ -91,7 +91,7 @@ class Faction extends Serializable {
      * @return bool
      */
     public function isMember(string $xuid): bool {
-        return isset($this->members[$xuid]);
+        return $this->getMember($xuid) !== null;
     }
 
     /**
@@ -100,7 +100,7 @@ class Faction extends Serializable {
      * @return FactionMember|null
      */
     public function getMember(string $xuid): ?FactionMember {
-        return $this->members[$xuid] ?? null;
+        return $this->members[$xuid] ?? array_values(array_filter($this->members, fn(FactionMember $member) => strtolower($member->getName()) === strtolower($xuid)))[0] ?? null;
     }
 
     /**

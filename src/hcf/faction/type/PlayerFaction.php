@@ -24,7 +24,6 @@ class PlayerFaction extends Faction {
      * @param float       $lastDtrUpdate
      * @param array       $allies
      * @param array       $requestedAllies
-     * @param array       $invited
      * @param bool        $open
      * @param bool        $friendlyFire
      * @param int         $lives
@@ -41,7 +40,6 @@ class PlayerFaction extends Faction {
         private float $lastDtrUpdate = 0,
         private array $allies = [],
         private array $requestedAllies = [],
-        private array $invited = [],
         private bool $open = false,
         private bool $friendlyFire = false,
         private int $lives = 0,
@@ -84,13 +82,6 @@ class PlayerFaction extends Faction {
      */
     public function getRequestedAllies(): array {
         return $this->requestedAllies;
-    }
-
-    /**
-     * @return array
-     */
-    public function getInvited(): array {
-        return $this->invited;
     }
 
     /**
@@ -180,7 +171,7 @@ class PlayerFaction extends Faction {
 
             $this->lastDtrUpdate = $now;
 
-            $this->save();
+            //$this->save();
         }
     }
 
@@ -202,8 +193,6 @@ class PlayerFaction extends Faction {
 
             if ($deathsUntilRaidable <= 0) {
                 echo 'Raidable' . PHP_EOL;
-
-                // Faction is now raidable.
             }
 
             $this->lastDtrUpdate = time();
@@ -229,7 +218,7 @@ class PlayerFaction extends Faction {
      * @return int
      */
     public function getRemainingRegenerationTime(): int {
-        return ($this->regenCooldown ?? 0) === 0 ? 0 : $this->regenCooldown - time();
+        return $this->regenCooldown === 0 ? 0 : $this->regenCooldown - time();
     }
 
     /**

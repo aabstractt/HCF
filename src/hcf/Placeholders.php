@@ -32,7 +32,7 @@ class Placeholders {
         foreach ($args as $i => $arg) {
             if ($arg === '') $arg = 'None';
 
-            $message = str_replace('{%' . $i . '}', $arg === 'Empty' ? '' : $arg, $message);
+            $message = str_replace('{%' . $i . '}' . ($arg === 'Empty' ? "\n" : ''), $arg === 'Empty' ? '' : $arg, $message);
         }
 
         return TextFormat::colorize($message);

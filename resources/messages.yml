@@ -1,25 +1,42 @@
-COMMAND_FACTION_ATTEMPT_CREATE: '&cYou must leave you current faction before you create one.'
 FACTION_NAME_TOO_SHORT: '&cThe name must be at least {%0} characters.'
 FACTION_NAME_TOO_LONG: '&cThe name cannot be longer than {%0} characters'
 FACTION_ALREADY_EXISTS: '&cThat name is already in use.'
+FACTION_NOT_INVITED: '&cThis faction has not invited you.'
+FACTION_NOT_FOUND: '&cFaction {%0} not found'
+
+COMMAND_FACTION_ATTEMPT_CREATE: '&cYou must leave you current faction before you create one.'
 COMMAND_FACTION_ACTION_COOLDOWN: '&eYou must wait 1 minute between creating and disbanding a faction.'
+COMMAND_FACTION_RAIDABLE: '&cYou cannot do this while your faction is raidable.'
+COMMAND_FACTION_NOT_CAPTAIN: '&cYou must be a captain or above to do this.'
+COMMAND_FACTION_ATTEMPT_JOIN: '&cYou must leave you current faction before you join another one.'
+
 YOU_CANNOT_LEAVE_FACTION_LEAD: '&cYou cannot leave a faction you lead.'
 MUST_LEAVE_FACTION_TERRITORY: "&cYou must leave your faction's territory before leaving."
+YOU_CANT_USE_THIS_ON_YOURSELF: "You can't use this on yourself"
+
+PLAYER_ATTEMPT_JOIN_ON_FREEZE: '&cYou cannot join this faction because they are on dtr freeze.'
+PLAYER_IN_FACTION: '&c{%0} is already in a faction!'
+PLAYER_ALREADY_INVITED: '&c{%0} has already been invited before!'
+PLAYER_ALREADY_MEMBER: '&c{%0} is already your faction.'
+PLAYER_FACTION_INVITE_SENT: '&e{%0} has been invited to the faction by {%1}.'
+FACTION_INVITE_RECEIVED: '&e{%0} has invited you to join {%1}.'
 
 PLAYER_JOINED_FACTION: '&a{%0}&e has joined the faction!'
 FACTION_PLAYER_LEFT: '&c{%0} has left the faction.'
 PLAYER_FACTION_LEFT: '&eYou have left your faction.'
 
+FACTION_FULL: '&cFaction {%0} is full!'
+
 FACTION_WHO_PLAYER:
   - '&7&m--------------------------------------'
   - '&9{%0} &7[{%1}/{%2}] &3- &eHQ: &f0, 0'
-  - '&eLeader: {%3}'
-  - '&eCo-Leaders: {%4}'
-  - '&eCaptain: {%5}'
-  - '&eMembers: {%6}'
-  - '&eBalance: &9{%7}'
+  - '&eLeader: &d{%3}'
+  - '&eCo-Leaders: &d{%4}'
+  - '&eCaptain: &d{%5}'
+  - '&eMembers: &d{%6}'
+  - '&eBalance: &9${%7}'
   - '&eDeaths until Raidable: &9{%8}'
-  - '&eTime until regen: &9{%9}'
+  - '{%9}'
   - '&ePoints: &9{%10}'
   - '&eLives: &9{%11}'
   - '&eAnnouncement: &d{%12}'
@@ -30,4 +47,4 @@ FACTION_WHO_SERVER:
   - "&eLocation: &f{%1}"
   - "&7&m--------------------------------------"
 
-FACTION_WHO_UNTIL_REGEN: 'Time until regen: &9{%0}'
+FACTION_WHO_UNTIL_REGEN: '&eTime until regen: &9{%0}'

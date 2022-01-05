@@ -5,7 +5,14 @@ declare(strict_types=1);
 namespace hcf\faction\command\argument\player;
 
 use hcf\api\Argument;
+use hcf\faction\FactionFactory;
+use hcf\faction\type\FactionMember;
+use hcf\faction\type\FactionRank;
+use hcf\Placeholders;
+use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;
+use pocketmine\player\Player;
+use pocketmine\utils\TextFormat;
 
 class FactionJoinArgument extends Argument {
 
@@ -15,6 +22,50 @@ class FactionJoinArgument extends Argument {
      * @param array         $args
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args): void {
-        // TODO: Implement execute() method.
+        if (!$sender instanceof Player) {
+            $sender->sendMessage(TextFormat::RED . 'Run this command in-game');
+
+            return;
+        }
+
+        if (count($args) === 0) {
+            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' accept <faction>');
+
+            return;
+        }
+
+        $session = SessionFactory::getInstance()->getPlayerSession($sender);
+
+        if ($session->getFaction() !== null) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_ATTEMPT_JOIN'));
+
+            return;
+        }
+
+        if (($faction = FactionFactory::getInstance()->getFactionName($args[0])) === null || (!$faction->isOpen() && !$faction->isAlreadyInvited($sender->getXuid()))) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_NOT_INVITED', $args[0]));
+
+            return;
+        }
+
+        if (!$faction->isOpen() && $faction->getRegenStatus() === FactionFactory::STATUS_PAUSED) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('PLAYER_ATTEMPT_JOIN_ON_FREEZE'));
+
+            return;
+        }
+
+        if ($faction->isAlreadyInvited($sender->getXuid())) {
+            $faction->removeInvite($sender->getXuid());
+
+            return;
+        }
+
+        if (count($faction->getMembers()) > FactionFactory::getMaxMembers()) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_FULL', $faction->getName()));
+
+            return;
+        }
+
+        FactionFactory::getInstance()->joinFaction($session, $faction);
     }
 }

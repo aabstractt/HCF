@@ -6,7 +6,9 @@ namespace hcf;
 
 use hcf\faction\command\FactionCommand;
 use hcf\faction\FactionFactory;
+use hcf\listener\PlayerDeathListener;
 use hcf\listener\PlayerJoinListener;
+use hcf\listener\PlayerQuitListener;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
@@ -26,7 +28,9 @@ class HCF extends PluginBase {
         $this->getServer()->getCommandMap()->register('faction', new FactionCommand('faction', 'Faction commands', '', ['f']));
 
         $this->registerListener(
-            new PlayerJoinListener()
+            new PlayerJoinListener(),
+            new PlayerQuitListener(),
+            new PlayerDeathListener()
         );
     }
 
@@ -86,5 +90,12 @@ class HCF extends PluginBase {
      */
     public function getArray(string $key, array $defaultValue = []): array {
         return is_array(($value = $this->getConfig()->getNested($key, $defaultValue))) ? $value : $defaultValue;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isUnderDevelopment(): bool {
+        return true;
     }
 }

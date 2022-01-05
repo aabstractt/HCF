@@ -12,6 +12,9 @@ use pocketmine\Server;
 
 class Faction extends Serializable {
 
+    /** @var array */
+    private array $invited = [];
+
     /**
      * @param int             $rowId
      * @param string          $name
@@ -44,6 +47,13 @@ class Faction extends Serializable {
     }
 
     /**
+     * @return bool
+     */
+    public function isRaidable(): bool {
+        return $this->deathsUntilRaidable <= 0.0;
+    }
+
+    /**
      * @return FactionMember[]
      */
     public function getMembers(): array {
@@ -54,7 +64,7 @@ class Faction extends Serializable {
      * @param FactionMember $factionMember
      */
     public function addMember(FactionMember $factionMember): void {
-        if (!$this->isMember($factionMember->getXuid())) {
+        if ($this->isMember($factionMember->getXuid())) {
             return;
         }
 
@@ -88,6 +98,33 @@ class Faction extends Serializable {
      */
     public function getMember(string $xuid): ?FactionMember {
         return $this->members[$xuid] ?? null;
+    }
+
+    /**
+     * @param string $xuid
+     *
+     * @return bool
+     */
+    public function isAlreadyInvited(string $xuid): bool {
+        return in_array($xuid, $this->invited, true);
+    }
+
+    /**
+     * @param string $xuid
+     *
+     * @return void
+     */
+    public function addInvite(string $xuid): void {
+        $this->invited[] = $xuid;
+    }
+
+    /**
+     * @param string $xuid
+     *
+     * @return void
+     */
+    public function removeInvite(string $xuid): void {
+        $this->invited = array_diff($this->invited, [$xuid]);
     }
 
     /**

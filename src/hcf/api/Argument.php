@@ -12,10 +12,12 @@ abstract class Argument {
      * Argument constructor.
      *
      * @param string      $name
+     * @param array       $aliases
      * @param string|null $permission
      */
     public function __construct(
         private string $name,
+        private array $aliases = [],
         private ?string $permission = null
     ) {}
 
@@ -24,6 +26,13 @@ abstract class Argument {
      */
     public function getName(): string {
         return $this->name;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAliases(): array {
+        return $this->aliases;
     }
 
     /**

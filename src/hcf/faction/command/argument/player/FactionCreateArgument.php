@@ -75,7 +75,7 @@ class FactionCreateArgument extends Argument {
                 return;
             }
 
-            FactionFactory::getInstance()->joinFaction($session, new PlayerFaction($rowId, $args[0], [$session->getXuid() => FactionMember::valueOf($session->getXuid(), $session->getName())]), FactionRank::LEADER());
+            FactionFactory::getInstance()->joinFaction($session, new PlayerFaction($rowId, $args[0]), FactionRank::LEADER());
 
             $session->setLastFactionEdit(HCF::dateNow());
         });

@@ -65,7 +65,6 @@ class FactionFactory {
                     $factionData['lastDtrUpdate'],
                     $factionData['allies'] ?? [],
                     $factionData['requestedAllies'] ?? [],
-                    $factionData['invited'] ?? [],
                     $factionData['open'] === 1,
                     $factionData['friendlyFire'] === 1,
                     $factionData['lives'],
@@ -92,12 +91,23 @@ class FactionFactory {
      * @return void
      */
     public function joinFaction(Session $session, PlayerFaction $faction, FactionRank $factionRank = null): void {
+        if ($factionRank === null) {
+            $factionRank = FactionRank::MEMBER();
+        }
+
         $session->setFaction($faction);
-        $session->setFactionRank($factionRank ?? FactionRank::MEMBER());
+        $session->setFactionRank($factionRank);
 
         $session->save();
 
         $faction->broadcastMessage(Placeholders::replacePlaceholders('PLAYER_JOINED_FACTION', $session->getName()));
+
+        $faction->addMember(FactionMember::valueOf($session->getXuid(), $session->getName(), $factionRank->ordinal()));
+
+        if ($factionRank === FactionRank::MEMBER()) {
+            # dtr-freeze = minutes
+            $faction->setRemainingRegenerationTime(FactionFactory::getDtrFreeze() * 60);
+        }
 
         if (!isset($this->factions[$faction->getRowId()])) {
             $faction->findLeader();
@@ -105,9 +115,9 @@ class FactionFactory {
             $this->factions[$faction->getRowId()] = $faction;
 
             $this->factionNames[$faction->getName()] = $faction->getRowId();
-
-            $faction->save();
         }
+
+        $faction->save();
     }
 
     /**

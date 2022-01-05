@@ -8,7 +8,9 @@ use hcf\faction\Faction;
 use hcf\faction\type\FactionRank;
 use hcf\session\async\SaveSessionAsync;
 use hcf\TaskUtils;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginException;
+use pocketmine\Server;
 
 class Session {
 
@@ -90,6 +92,13 @@ class Session {
      */
     public function setLastFactionEdit(?string $lastFactionEdit): void {
         $this->lastFactionEdit = $lastFactionEdit;
+    }
+
+    /**
+     * @return Player
+     */
+    public function getInstanceNonNull(): Player {
+        return Server::getInstance()->getPlayerExact($this->name) ?? throw new PluginException('Player is offline');
     }
 
     public function save(): void {

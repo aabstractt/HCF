@@ -10,6 +10,7 @@ use hcf\session\async\LoadSessionAsync;
 use hcf\TaskUtils;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginException;
+use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 
 class SessionFactory {
@@ -51,6 +52,19 @@ class SessionFactory {
      * @return Session|null
      */
     public function getSession(string $name): ?Session {
+        if (($player = Server::getInstance()->getPlayerByPrefix($name)) === null) {
+            return null;
+        }
+
+        return $this->sessions[strtolower($player->getName())] ?? null;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Session|null
+     */
+    public function getSessionName(string $name): ?Session {
         return $this->sessions[strtolower($name)] ?? null;
     }
 
@@ -60,6 +74,6 @@ class SessionFactory {
      * @return Session
      */
     public function getPlayerSession(Player $player): Session {
-        return $this->getSession($player->getName()) ?? throw new PluginException('Player session is not loaded...');
+        return $this->getSessionName($player->getName()) ?? throw new PluginException('Player session is not loaded...');
     }
 }

@@ -20,16 +20,12 @@ class FactionWhoArgument extends Argument {
      * @param array         $args
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args): void {
-        if (!$sender instanceof Player) {
-            $sender->sendMessage(TextFormat::RED . 'Run this command in-game');
+        $faction = null;
 
-            return;
-        }
-
-        if (count($args) === 0) {
-            $faction = FactionFactory::getInstance()->getPlayerFaction($sender);
-        } else {
+        if (count($args) > 0) {
             $faction = FactionFactory::getInstance()->getFactionName($args[0]);
+        } else if ($sender instanceof Player) {
+            $faction = FactionFactory::getInstance()->getPlayerFaction($sender);
         }
 
         if ($faction === null) {
@@ -38,6 +34,7 @@ class FactionWhoArgument extends Argument {
             return;
         }
 
+        /** @var array<int, string> $m */
         $m = [];
 
         foreach ($faction->getMembers() as $member) {
@@ -54,7 +51,7 @@ class FactionWhoArgument extends Argument {
             implode(', ', $m[FactionRank::MEMBER()->ordinal()] ?? []),
             (string) $faction->getBalance(),
             (string) $faction->getDeathsUntilRaidable(true),
-            ($remain = $faction->getRemainingRegenerationTime()) === 0 ? 'Empty' : Placeholders::replacePlaceholders('FACTION_WHO_UNTIL_REGEN', Placeholders::timeString($remain)),
+            ($remain = $faction->getRemainingRegenerationTime()) <= 0 ? 'Empty' : Placeholders::replacePlaceholders('FACTION_WHO_UNTIL_REGEN', Placeholders::timeString($remain)),
             (string) $faction->getPoints(),
             (string) $faction->getLives(),
             $faction->getAnnouncement() ?? 'None'

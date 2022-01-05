@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace hcf;
 
+use hcf\event\EventHeartbeat;
+use hcf\event\EventManager;
+use hcf\event\sotw\command\SotwCommand;
 use hcf\faction\command\FactionCommand;
 use hcf\faction\FactionFactory;
 use hcf\listener\PlayerDeathListener;
 use hcf\listener\PlayerJoinListener;
 use hcf\listener\PlayerQuitListener;
+use hcf\listener\SotwListener;
+use pocketmine\command\Command;
 use pocketmine\event\Listener;
+use pocketmine\permission\DefaultPermissions;
+use pocketmine\permission\Permission;
+use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 
@@ -17,21 +25,37 @@ class HCF extends PluginBase {
 
     use SingletonTrait;
 
-    public function onEnable(): void {
+    private EventManager $event_manager;
+
+    protected function onLoad(): void {
         self::setInstance($this);
 
         $this->saveDefaultConfig();
-        $this->saveResource('messages.yml', self::isUnderDevelopment());
+        $this->saveResource("messages.yml", self::isUnderDevelopment());
+    }
 
+    public function onEnable(): void {
         FactionFactory::getInstance()->init();
+        $this->event_manager = new EventManager();
 
-        $this->getServer()->getCommandMap()->register('faction', new FactionCommand('faction', 'Faction commands', '', ['f']));
-
+        $this->registerCommand(
+            new FactionCommand("faction", "Faction commands", null, ["f"]),
+            new SotwCommand()
+        );
         $this->registerListener(
             new PlayerJoinListener(),
             new PlayerQuitListener(),
-            new PlayerDeathListener()
+            new PlayerDeathListener(),
+            new SotwListener()
         );
+
+        $this->getScheduler()->scheduleRepeatingTask(new EventHeartbeat(), 20); // 1 tick
+    }
+
+    private function registerCommand(Command ...$commands) {
+        foreach($commands as $command) {
+            $this->getServer()->getCommandMap()->register("hcf", $command);
+        }
     }
 
     /**
@@ -98,4 +122,9 @@ class HCF extends PluginBase {
     public static function isUnderDevelopment(): bool {
         return true;
     }
+
+    public function getEventManager(): EventManager {
+        return $this->event_manager;
+    }
+
 }

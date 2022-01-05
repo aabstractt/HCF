@@ -11,6 +11,11 @@ COMMAND_FACTION_RAIDABLE: '&cYou cannot do this while your faction is raidable.'
 COMMAND_FACTION_NOT_CAPTAIN: '&cYou must be a captain or above to do this.'
 COMMAND_FACTION_ATTEMPT_JOIN: '&cYou must leave you current faction before you join another one.'
 
+MUST_ENABLE_SOTW: "&cYou have to enable the sotw event to do this."
+MUST_DISABLE_SOTW: "&cYou have to disable the sotw event to do this."
+SOTW_SUCCESSFULLY_DISABLED: "&aYou have successfully disabled the sotw event."
+SOTW_SUCCESSFULLY_ENABLED: "&aYou have successfully enabled the sotw event."
+
 YOU_CANNOT_LEAVE_FACTION_LEAD: '&cYou cannot leave a faction you lead.'
 MUST_LEAVE_FACTION_TERRITORY: "&cYou must leave your faction's territory before leaving."
 YOU_CANT_USE_THIS_ON_YOURSELF: "You can't use this on yourself"

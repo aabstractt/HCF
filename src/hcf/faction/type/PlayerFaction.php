@@ -21,7 +21,7 @@ class PlayerFaction extends Faction {
      * @param int         $points
      * @param float       $deathsUntilRaidable
      * @param int         $regenCooldown
-     * @param float       $lastDtrUpdate
+     * @param int         $lastDtrUpdate
      * @param array       $allies
      * @param array       $requestedAllies
      * @param bool        $open
@@ -37,7 +37,7 @@ class PlayerFaction extends Faction {
         int $points = 0,
         float $deathsUntilRaidable = 0.0,
         private int $regenCooldown = 0,
-        private float $lastDtrUpdate = 0,
+        private int $lastDtrUpdate = 0,
         private array $allies = [],
         private array $requestedAllies = [],
         private bool $open = false,
@@ -141,6 +141,13 @@ class PlayerFaction extends Faction {
     }
 
     /**
+     * @return string
+     */
+    public function getDtrSymbol(): string {
+        return ['&c■', '&6⇪', '&a▶'][$this->getRegenStatus()];
+    }
+
+    /**
      * @param bool $updateLastCheck
      *
      * @return float
@@ -165,13 +172,9 @@ class PlayerFaction extends Faction {
 
             $multiplier = ($timePassed + $remainder) / $dtrUpdate;
 
-            $increase = $multiplier * FactionFactory::getDtrIncrementBetweenUpdate();
-
-            $this->setDeathsUntilRaidable($this->getDeathsUntilRaidable() + $increase);
+            $this->setDeathsUntilRaidable($this->getDeathsUntilRaidable() + ($multiplier * FactionFactory::getDtrIncrementBetweenUpdate()));
 
             $this->lastDtrUpdate = $now;
-
-            //$this->save();
         }
     }
 
@@ -209,9 +212,9 @@ class PlayerFaction extends Faction {
      * @param int $time
      */
     public function setRemainingRegenerationTime(int $time): void {
-        $this->regenCooldown = ($now = time()) + $time;
+        $this->regenCooldown = time() + $time;
 
-        $this->lastDtrUpdate = $now + (FactionFactory::getDtrUpdate() * 2);
+        $this->lastDtrUpdate = $this->regenCooldown;
     }
 
     /**

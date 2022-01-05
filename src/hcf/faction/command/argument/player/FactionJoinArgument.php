@@ -6,8 +6,7 @@ namespace hcf\faction\command\argument\player;
 
 use hcf\api\Argument;
 use hcf\faction\FactionFactory;
-use hcf\faction\type\FactionMember;
-use hcf\faction\type\FactionRank;
+use hcf\HCF;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;
@@ -30,14 +29,14 @@ class FactionJoinArgument extends Argument {
         }
 
         if (count($args) === 0) {
-            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' accept <faction>');
+            $sender->sendMessage(TextFormat::RED . sprintf('Usage: /%s %s <faction_name>', $commandLabel, $argumentLabel));
 
             return;
         }
 
         $session = SessionFactory::getInstance()->getPlayerSession($sender);
 
-        if ($session->getFaction() !== null) {
+        if ($session->getFaction() !== null && !HCF::isUnderDevelopment()) {
             $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_ATTEMPT_JOIN'));
 
             return;
@@ -57,8 +56,6 @@ class FactionJoinArgument extends Argument {
 
         if ($faction->isAlreadyInvited($sender->getXuid())) {
             $faction->removeInvite($sender->getXuid());
-
-            return;
         }
 
         if (count($faction->getMembers()) > FactionFactory::getMaxMembers()) {

@@ -21,7 +21,7 @@ class HCF extends PluginBase {
         self::setInstance($this);
 
         $this->saveDefaultConfig();
-        $this->saveResource('messages.yml');
+        $this->saveResource('messages.yml', self::isUnderDevelopment());
 
         FactionFactory::getInstance()->init();
 

@@ -21,9 +21,9 @@ class FactionFactory {
     use SingletonTrait;
 
     /** @var int */
-    public const STATUS_PAUSED = 1;
-    public const STATUS_REGENERATING = 2;
-    public const STATUS_FULL = 3;
+    public const STATUS_PAUSED = 0;
+    public const STATUS_REGENERATING = 1;
+    public const STATUS_FULL = 2;
 
     /** @var string[] */
     public static array $regenStatus = [

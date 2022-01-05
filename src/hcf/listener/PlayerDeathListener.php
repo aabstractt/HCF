@@ -29,7 +29,9 @@ class PlayerDeathListener implements Listener {
         $newDtr = $faction->setDeathsUntilRaidable($faction->getDeathsUntilRaidable() - 1.0);
 
         # dtr-freeze = minutes
-        $faction->setRemainingRegenerationTime(FactionFactory::getDtrFreeze() * 60);
+        //$faction->setRemainingRegenerationTime(FactionFactory::getDtrFreeze() * 60);
+
+        $faction->setRemainingRegenerationTime(15);
 
         $faction->save();
 

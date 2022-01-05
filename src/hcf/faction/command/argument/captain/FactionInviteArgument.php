@@ -87,7 +87,7 @@ class FactionInviteArgument extends Argument {
 
         $faction->addInvite($targetSession->getXuid());
 
-        $targetSession->getInstanceNonNull()->sendMessage(Placeholders::replacePlaceholders('FACTION_INVITE_RECEIVED', $faction->getName(), $session->getName()));
+        $targetSession->getInstanceNonNull()->sendMessage(Placeholders::replacePlaceholders('FACTION_INVITE_RECEIVED', $session->getName(), $faction->getName()));
 
         $faction->broadcastMessage(Placeholders::replacePlaceholders('PLAYER_FACTION_INVITE_SENT', $targetSession->getName(), $session->getName()));
     }

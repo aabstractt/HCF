@@ -10,4 +10,24 @@ PLAYER_JOINED_FACTION: '&a{%0}&e has joined the faction!'
 FACTION_PLAYER_LEFT: '&c{%0} has left the faction.'
 PLAYER_FACTION_LEFT: '&eYou have left your faction.'
 
-FACTION_WHO: "&9{%0} &7[{%1}/{%2}] &3- &eHQ: &f0, 0\n&eLeader: {%3}\n&eCo-Leaders: {%4}\n&eCaptain: {%5}\n&eMembers: {%6}\n&eBalance: {%7}\n&eDeaths until Raidable: {%8}\n&eTime until regen: {%9}\n&ePoints: {%10}\n&eLives: {%11}\n&eAnnouncement: &d{%12}"
+FACTION_WHO_PLAYER:
+  - '&7&m--------------------------------------'
+  - '&9{%0} &7[{%1}/{%2}] &3- &eHQ: &f0, 0'
+  - '&eLeader: {%3}'
+  - '&eCo-Leaders: {%4}'
+  - '&eCaptain: {%5}'
+  - '&eMembers: {%6}'
+  - '&eBalance: &9{%7}'
+  - '&eDeaths until Raidable: &9{%8}'
+  - '&eTime until regen: &9{%9}'
+  - '&ePoints: &9{%10}'
+  - '&eLives: &9{%11}'
+  - '&eAnnouncement: &d{%12}'
+  - '&7&m--------------------------------------'
+FACTION_WHO_SERVER:
+  - "&7&m--------------------------------------"
+  - "{%0}"
+  - "&eLocation: &f{%1}"
+  - "&7&m--------------------------------------"
+
+FACTION_WHO_UNTIL_REGEN: 'Time until regen: &9{%0}'

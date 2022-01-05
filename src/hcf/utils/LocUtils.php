@@ -39,4 +39,17 @@ class LocUtils {
 
         return new Location((int) $split[0], (int) $split[1], (int) $split[2], $world, (float) $split[3], (float) $split[4]);
     }
+
+    /**
+     * @param Location|null $loc
+     *
+     * @return string
+     */
+    public static function homeToString(?Location $loc): string {
+        if ($loc === null) {
+            return 'Not Set';
+        }
+
+        return 'X: '. $loc->getFloorX() . ' Z: ' . $loc->getFloorZ();
+    }
 }

@@ -44,7 +44,7 @@ class FactionWhoArgument extends Argument {
             $m[$member->getFactionRank()->ordinal()][] = ($member->isOnline() ? TextFormat::GREEN : TextFormat::GRAY) . $member->getName() . sprintf('&e[&a%s&e]', '0');
         }
 
-        $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_WHO',
+        $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_WHO_PLAYER',
             $faction->getName(),
             (string) count($faction->getMembers()),
             (string) FactionFactory::getMaxMembers(),
@@ -54,7 +54,7 @@ class FactionWhoArgument extends Argument {
             implode(', ', $m[FactionRank::MEMBER()->ordinal()] ?? []),
             (string) $faction->getBalance(),
             (string) $faction->getDeathsUntilRaidable(true),
-            Placeholders::replacePlaceholders(FactionFactory::$regenStatus[$faction->getRegenStatus()], (string) $faction->getRemainingRegenerationTime()),
+            ($remain = $faction->getRemainingRegenerationTime()) === 0 ? 'Empty' : Placeholders::replacePlaceholders('FACTION_WHO_UNTIL_REGEN', Placeholders::timeString($remain)),
             (string) $faction->getPoints(),
             (string) $faction->getLives(),
             $faction->getAnnouncement() ?? 'None'

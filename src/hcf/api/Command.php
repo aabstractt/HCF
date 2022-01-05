@@ -51,7 +51,7 @@ abstract class Command extends \pocketmine\command\Command {
         }
 
         if (($permission = $command->getPermission()) !== null && !$sender->hasPermission($permission)) {
-            $sender->sendMessage(TextFormat::RED . 'You don\'t have permissions to use this command');
+            $sender->sendMessage(TextFormat::RED . 'You don\'t have permissions to use this command!');
 
             return;
         }

@@ -73,6 +73,10 @@ class FactionFactory {
 
                 $faction->findLeader();
 
+                if (isset($factionData['homeString'])) {
+                    $faction->setHomePosition(Placeholders::stringToLocation($factionData['homeString']));
+                }
+
                 $this->factionNames[$faction->getName()] = $faction->getRowId();
                 $this->factions[$faction->getRowId()] = $faction;
 

@@ -8,10 +8,13 @@ use hcf\faction\async\SaveFactionAsync;
 use hcf\faction\type\FactionMember;
 use hcf\TaskUtils;
 use hcf\utils\Serializable;
+use pocketmine\entity\Location;
 use pocketmine\Server;
 
 class Faction extends Serializable {
 
+    /** @var Location|null */
+    private ?Location $homePosition;
     /** @var array */
     private array $invited = [];
 
@@ -180,6 +183,20 @@ class Faction extends Serializable {
 
             $player->sendMessage($message);
         }
+    }
+
+    /**
+     * @param Location $pos
+     */
+    public function setHomePosition(Location $pos): void {
+        $this->homePosition = $pos;
+    }
+
+    /**
+     * @return Location|null
+     */
+    public function getHomePosition(): ?Location {
+        return $this->homePosition;
     }
 
     public function save(): void {

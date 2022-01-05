@@ -14,6 +14,9 @@ use pocketmine\Server;
 
 class Session {
 
+    /** @var int */
+    private int $homeTeleport = -1;
+
     /**
      * @param string       $xuid
      * @param string       $name
@@ -92,6 +95,22 @@ class Session {
      */
     public function setLastFactionEdit(?string $lastFactionEdit): void {
         $this->lastFactionEdit = $lastFactionEdit;
+    }
+
+    /**
+     * @param int $homeTeleport
+     *
+     * @return void
+     */
+    public function setHomeTeleport(int $homeTeleport): void {
+        $this->homeTeleport = $homeTeleport;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHomeTeleport(): int {
+        return $this->homeTeleport;
     }
 
     /**

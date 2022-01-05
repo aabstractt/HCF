@@ -2,4 +2,6 @@ CREATE TABLE IF NOT EXISTS player_factions (rowId INT PRIMARY KEY AUTO_INCREMENT
 
 CREATE TABLE IF NOT EXISTS players (rowId INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(16), xuid TEXT, lives INT, balance INT, factionRowId INT, rankId INT);
 
-CREATE TABLE IF NOT EXISTS faction_claims(rowId INT PRIMARY KEY, factionRowId INT, worldName VARCHAR(16), firstCorner TEXT, secondCorner TEXT);
+CREATE TABLE IF NOT EXISTS faction_claims(rowId INT PRIMARY KEY AUTO_INCREMENT, factionRowId INT, firstCorner TEXT, secondCorner TEXT);
+
+CREATE TABLE IF NOT EXISTS faction_home(rowId INT PRIMARY KEY AUTO_INCREMENT, factionRowId INT, homeString TEXT);

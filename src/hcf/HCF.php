@@ -8,6 +8,7 @@ use hcf\faction\command\FactionCommand;
 use hcf\faction\FactionFactory;
 use hcf\listener\PlayerDeathListener;
 use hcf\listener\PlayerJoinListener;
+use hcf\listener\PlayerMoveListener;
 use hcf\listener\PlayerQuitListener;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
@@ -30,6 +31,7 @@ class HCF extends PluginBase {
         $this->registerListener(
             new PlayerJoinListener(),
             new PlayerQuitListener(),
+            new PlayerMoveListener(),
             new PlayerDeathListener()
         );
     }

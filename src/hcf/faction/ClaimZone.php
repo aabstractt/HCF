@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace hcf\faction;
 
+use hcf\Placeholders;
 use pocketmine\entity\Location;
 use hcf\utils\LocUtils;
 use pocketmine\world\Position;
@@ -67,6 +68,6 @@ class ClaimZone {
      * @return ClaimZone
      */
     public static function deserialize(array $serialized): ClaimZone {
-        return new ClaimZone($serialized[2], LocUtils::stringToLocation($serialized[0]), LocUtils::stringToLocation($serialized[1]));
+        return new ClaimZone($serialized[2], Placeholders::stringToLocation($serialized[0]), Placeholders::stringToLocation($serialized[1]));
     }
 }

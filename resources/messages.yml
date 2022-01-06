@@ -1,19 +1,19 @@
-FACTION_NAME_TOO_SHORT: '&cThe name must be at least {%0} characters.'
-FACTION_NAME_TOO_LONG: '&cThe name cannot be longer than {%0} characters'
-FACTION_ALREADY_EXISTS: '&cThat name is already in use.'
-FACTION_NOT_INVITED: '&cThis faction has not invited you.'
-FACTION_NOT_FOUND: '&cFaction {%0} not found'
-FACTION_INVITE_RECEIVED: '&e{%0} has invited you to join {%1}.'
+FACTION_NAME_TOO_SHORT: '&4The name must be at least {%0} characters long.'
+FACTION_NAME_TOO_LONG: '&4The name cannot be longer than {%0} characters'
+FACTION_ALREADY_EXISTS: '&4That name is already in use.'
+FACTION_NOT_INVITED: '&4This faction has not invited you.'
+FACTION_NOT_FOUND: '&4Faction {%0} not found'
+FACTION_INVITE_RECEIVED: '&4{%0} has invited you to join {%1}.'
 
-COMMAND_FACTION_ATTEMPT_CREATE: '&cYou must leave you current faction before you create one.'
-COMMAND_FACTION_ACTION_COOLDOWN: '&eYou must wait 1 minute between creating and disbanding a faction.'
-COMMAND_FACTION_RAIDABLE: '&cYou cannot do this while your faction is raidable.'
-COMMAND_FACTION_NOT_CAPTAIN: '&cYou must be a captain or above to do this.'
-COMMAND_FACTION_ATTEMPT_JOIN: '&cYou must leave you current faction before you join another one.'
+COMMAND_FACTION_ATTEMPT_CREATE: '&4You must leave you current faction before you create one.'
+COMMAND_FACTION_ACTION_COOLDOWN: '&4You must wait 1 minute between creating and disbanding a faction.'
+COMMAND_FACTION_RAIDABLE: '&4You cannot do this while your faction is raidable.'
+COMMAND_FACTION_NOT_CAPTAIN: '&4You must be a captain or above to do this.'
+COMMAND_FACTION_ATTEMPT_JOIN: '&4You must leave you current faction before you join another one.'
 
-YOU_CANNOT_LEAVE_FACTION_LEAD: '&cYou cannot leave a faction you lead.'
-MUST_LEAVE_FACTION_TERRITORY: "&cYou must leave your faction's territory before leaving."
-YOU_CANT_USE_THIS_ON_YOURSELF: "You can't use this on yourself"
+YOU_CANNOT_LEAVE_FACTION_LEAD: '&4You cannot leave a faction you lead.'
+MUST_LEAVE_FACTION_TERRITORY: "&4You must leave your faction's territory before leaving."
+YOU_CANT_USE_THIS_ON_YOURSELF: "§4You can't use this on yourself"
 
 PLAYER_ATTEMPT_JOIN_ON_FREEZE: '&cYou cannot join this faction because they are on dtr freeze.'
 PLAYER_IN_FACTION: '&c{%0} is already in a faction!'

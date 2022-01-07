@@ -14,7 +14,7 @@ use pocketmine\Server;
 class Faction extends Serializable {
 
     /** @var Location|null */
-    private ?Location $homePosition;
+    private ?Location $homePosition = null;
     /** @var array */
     private array $invited = [];
 

@@ -6,8 +6,9 @@ namespace hcf\faction;
 
 use hcf\Placeholders;
 use pocketmine\entity\Location;
-use hcf\utils\LocUtils;
+use pocketmine\math\AxisAlignedBB;
 use pocketmine\world\Position;
+use pocketmine\world\World;
 
 class ClaimZone {
 
@@ -59,7 +60,7 @@ class ClaimZone {
         $minZ = min($firstCorner->getFloorZ(), $secondCorner->getFloorZ());
         $maxZ = max($firstCorner->getFloorZ(), $secondCorner->getFloorZ());
 
-        return $minX <= $pos->getFloorX() && $maxX >= $pos->getFloorX() && $minZ <= $pos->getFloorZ() && $maxZ >= $pos->getFloorZ() && $pos->getWorld()->getFolderName() === $firstCorner->getWorld()->getFolderName();
+        return (new AxisAlignedBB($minX, 0, $minZ, $maxX, World::Y_MAX, $maxZ))->isVectorInside($pos) && $pos->getWorld()->getFolderName() === $firstCorner->getWorld()->getFolderName();
     }
 
     /**

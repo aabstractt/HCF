@@ -4,6 +4,8 @@ FACTION_ALREADY_EXISTS: '&4That name is already in use.'
 FACTION_NOT_INVITED: '&4This faction has not invited you.'
 FACTION_NOT_FOUND: '&4Faction {%0} not found'
 FACTION_INVITE_RECEIVED: '&4{%0} has invited you to join {%1}.'
+FACTION_NOT_ENOUGH_BALANCE: "The faction doesn't have enough money to do this."
+FACTION_PLAYER_PROMOTED: '&7{%0}&2{%1}&e has been assigned as a faction &f{%2}&e.'
 
 COMMAND_FACTION_ATTEMPT_CREATE: '&4You must leave you current faction before you create one.'
 COMMAND_FACTION_ACTION_COOLDOWN: '&4You must wait 1 minute between creating and disbanding a faction.'
@@ -20,6 +22,9 @@ PLAYER_IN_FACTION: '&c{%0} is already in a faction!'
 PLAYER_ALREADY_INVITED: '&c{%0} has already been invited before!'
 PLAYER_ALREADY_MEMBER: '&c{%0} is already your faction.'
 PLAYER_FACTION_INVITE_SENT: '&e{%0} has been invited to the faction by {%1}.'
+PLAYER_WITHDREW_BALANCE: "&d{%0}&e has withdrew &d$%{%1}&e from the faction balance."
+
+YOU_WITHDRAWN_BALANCE: "&eYou have withdrawn &d${%0}&e from the faction balance."
 
 PLAYER_JOINED_FACTION: '&a{%0}&e has joined the faction!'
 FACTION_PLAYER_LEFT: '&c{%0} has left the faction.'

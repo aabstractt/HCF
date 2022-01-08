@@ -41,6 +41,13 @@ class FactionMember {
     }
 
     /**
+     * @param FactionRank $factionRank
+     */
+    public function setFactionRank(FactionRank $factionRank): void {
+        $this->factionRank = $factionRank;
+    }
+
+    /**
      * @return bool
      */
     public function isOnline(): bool {

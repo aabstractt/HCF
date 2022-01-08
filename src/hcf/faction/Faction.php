@@ -104,21 +104,27 @@ class Faction extends Serializable {
     }
 
     /**
-     * @param string $xuid
-     *
-     * @return bool
+     * @return array
      */
-    public function isAlreadyInvited(string $xuid): bool {
-        return in_array($xuid, $this->invited, true);
+    public function getInvited(): array {
+        return $this->invited;
     }
 
     /**
      * @param string $xuid
      *
-     * @return void
+     * @return bool
      */
-    public function addInvite(string $xuid): void {
-        $this->invited[] = $xuid;
+    public function isAlreadyInvited(string $xuid): bool {
+        return isset($this->invited[$xuid]) || in_array($xuid, $this->invited, true);
+    }
+
+    /**
+     * @param string $xuid
+     * @param string $name
+     */
+    public function addInvite(string $xuid, string $name): void {
+        $this->invited[$xuid] = $name;
     }
 
     /**
@@ -127,7 +133,7 @@ class Faction extends Serializable {
      * @return void
      */
     public function removeInvite(string $xuid): void {
-        $this->invited = array_diff($this->invited, [$xuid]);
+        unset($this->invited[$xuid]);
     }
 
     /**

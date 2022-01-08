@@ -150,6 +150,6 @@ class Session {
             $rowId = $this->faction->getRowId();
         }
 
-        TaskUtils::runAsync(new SaveSessionAsync($this->xuid, $this->name, $rowId, $this->factionRank->ordinal(), 1, 1));
+        TaskUtils::runAsync(new SaveSessionAsync($this->xuid, $this->name, $rowId, $this->factionRank->ordinal(), 1, $this->balance));
     }
 }

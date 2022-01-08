@@ -13,7 +13,7 @@ use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
-class FactionKickArgument extends Argument {
+class FactionPromoteArgument extends Argument {
 
     /**
      * @param CommandSender $sender
@@ -31,7 +31,7 @@ class FactionKickArgument extends Argument {
         $session = SessionFactory::getInstance()->getPlayerSession($sender);
 
         if (($faction = $session->getFaction()) === null) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_PLAYER_NOT_IN_FACTION'));
+            $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_NOT_IN'));
 
             return;
         }
@@ -43,7 +43,7 @@ class FactionKickArgument extends Argument {
         }
 
         if (count($args) === 0) {
-            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' kick <player>');
+            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' promote <player>');
 
             return;
         }
@@ -66,16 +66,24 @@ class FactionKickArgument extends Argument {
             return;
         }
 
-        if ($member->getFactionRank()->isAtLeast($session->getFactionRank())) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('YOU_CANNOT_KICK_TARGET', $name));
+        if ($member->getFactionRank()->isAtLeast($session->getFactionRank()) || $member->getFactionRank()->ordinal() === FactionRank::COLEADER()->ordinal()) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('YOU_CANNOT_PROMOTE_TARGET', $name));
 
             return;
         }
 
-        $sender->sendMessage(Placeholders::replacePlaceholders('SUCCESSFULLY_KICKED', $name));
+        $factionRank = $member->getFactionRank() === FactionRank::MEMBER() ? FactionRank::CAPTAIN() : FactionRank::COLEADER();
 
-        $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_LEFT_FACTION', $name));
+        $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_PLAYER_PROMOTED', $factionRank->getStars(), $member->getName(), $factionRank->name()));
 
-        $faction->removeMember($member->getXuid());
+        if (($targetSession = SessionFactory::getInstance()->getSessionName($member->getName())) !== null) {
+            $targetSession->setFactionRank($factionRank);
+
+            $targetSession->save();
+
+            return;
+        }
+
+        // TODO: SaveSessionAsync
     }
 }

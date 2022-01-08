@@ -7,7 +7,9 @@ namespace hcf\faction\command;
 use hcf\api\Command;
 use hcf\faction\command\argument\captain\FactionInviteArgument;
 use hcf\faction\command\argument\coleader\FactionKickArgument;
+use hcf\faction\command\argument\coleader\FactionPromoteArgument;
 use hcf\faction\command\argument\coleader\FactionSetHomeArgument;
+use hcf\faction\command\argument\coleader\FactionWithdrawArgument;
 use hcf\faction\command\argument\FactionCreateArgument;
 use hcf\faction\command\argument\FactionJoinArgument;
 use hcf\faction\command\argument\FactionWhoArgument;
@@ -32,7 +34,9 @@ class FactionCommand extends Command {
             new FactionCreateArgument('create'),
             new FactionInviteArgument('invite'),
             new FactionKickArgument('kick'),
+            new FactionPromoteArgument('promote'),
             new FactionSetHomeArgument('sethome'),
+            new FactionWithdrawArgument('withdraw'),
             new FactionDisbandArgument('disband'),
             new FactionHomeArgument('home'),
             new FactionDepositArgument('deposit', ['d']),

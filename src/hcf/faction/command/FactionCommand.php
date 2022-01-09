@@ -9,6 +9,8 @@ use hcf\faction\command\argument\admin\FactionAddBalanceArgument;
 use hcf\faction\command\argument\admin\FactionDecreaseBalanceArgument;
 use hcf\faction\command\argument\admin\FactionDecreasePointsArgument;
 use hcf\faction\command\argument\admin\FactionForceDisbandArgument;
+use hcf\faction\command\argument\admin\FactionForceJoinArgument;
+use hcf\faction\command\argument\admin\FactionForceUnclaimArgument;
 use hcf\faction\command\argument\admin\FactionSetDtrArgument;
 use hcf\faction\command\argument\admin\FactionAddPointsArgument;
 use hcf\faction\command\argument\captain\FactionInviteArgument;
@@ -20,6 +22,7 @@ use hcf\faction\command\argument\coleader\FactionSetHomeArgument;
 use hcf\faction\command\argument\coleader\FactionWithdrawArgument;
 use hcf\faction\command\argument\FactionCreateArgument;
 use hcf\faction\command\argument\FactionJoinArgument;
+use hcf\faction\command\argument\FactionTopArgument;
 use hcf\faction\command\argument\FactionWhoArgument;
 use hcf\faction\command\argument\leader\FactionDisbandArgument;
 use hcf\faction\command\argument\member\FactionDepositArgument;
@@ -41,6 +44,8 @@ class FactionCommand extends Command {
         $this->addArgument(
             new FactionForceDisbandArgument('forcedisband', [], 'faction.admin.forcedisband'),
             new FactionSetDtrArgument('setdtr', [], 'faction.admin.setdtr'),
+            new FactionForceJoinArgument('forcejoin', [], 'faction.admin.forcejoin'),
+            new FactionForceUnclaimArgument('forceunclaim', [], 'faction.admin.forceunclaim'),
             new FactionAddPointsArgument('addpoints', [], 'faction.admin.addpoints'),
             new FactionDecreasePointsArgument('decreasepoints', ['rempoints'], 'faction.admin.decreasepoints'),
             new FactionAddBalanceArgument('addbalance', ['addbal'], 'faction.admin.addbalance'),
@@ -58,7 +63,8 @@ class FactionCommand extends Command {
             new FactionDepositArgument('deposit', ['d']),
             new FactionLeaveArgument('leave'),
             new FactionJoinArgument('join', ['accept']),
-            new FactionWhoArgument('who', ['info', 'show'])
+            new FactionWhoArgument('who', ['info', 'show']),
+            new FactionTopArgument('top')
         );
     }
 }

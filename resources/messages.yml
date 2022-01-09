@@ -4,16 +4,20 @@ FACTION_ALREADY_EXISTS: '&4That name is already in use.'
 FACTION_NOT_INVITED: '&4This faction has not invited you.'
 FACTION_NOT_FOUND: '&4Faction {%0} not found'
 FACTION_INVITE_RECEIVED: '&4{%0} has invited you to join {%1}.'
+FACTION_MEMBER_DEPOSITED: "{%0}&e has deposited &e${%1}&e into the faction balance."
 FACTION_NOT_ENOUGH_BALANCE: "The faction doesn't have enough money to do this."
 FACTION_PLAYER_PROMOTED: '&7{%0}&2{%1}&e has been assigned as a faction &f{%2}&e.'
 FACTION_DTR_UPDATED: "Faction dtr was set to {%1}"
 FACTION_CLAIM_COMPLETED: "Claim was successfully completed"
+FACTION_CLAIM_NOT_FOUND: "Claim for faction {%0} not found"
+FACTION_CLAIM_SUCCESSFULLY_REMOVED: "Claim for faction {%0} was successfully removed."
 
 COMMAND_FACTION_ATTEMPT_CREATE: '&4You must leave you current faction before you create one.'
 COMMAND_FACTION_ACTION_COOLDOWN: '&4You must wait 1 minute between creating and disbanding a faction.'
 COMMAND_FACTION_RAIDABLE: '&4You cannot do this while your faction is raidable.'
 COMMAND_FACTION_NOT_CAPTAIN: '&4You must be a captain or above to do this.'
 COMMAND_FACTION_ATTEMPT_JOIN: '&4You must leave you current faction before you join another one.'
+COMMAND_FACTION_TOP: "&7&m--------------------------------------\n{%0}\n&7&m--------------------------------------"
 
 YOU_CANNOT_LEAVE_FACTION_LEAD: '&4You cannot leave a faction you lead.'
 MUST_LEAVE_FACTION_TERRITORY: "&4You must leave your faction's territory before leaving."
@@ -36,7 +40,8 @@ FACTION_FULL: '&cFaction {%0} is full!'
 INVALID_NUMBER: '&c{%0} is a invalid value'
 AMOUNT_MUST_BE_POSITIVE: "&cAmount must be positive."
 NOT_ENOUGH_BALANCE: "&cYou need at least &l${%0}&r&c to do this, you only have &l${%1}"
-FACTION_MEMBER_DEPOSITED: "{%0}&e has deposited &e${%1}&e into the faction balance."
+FIRST_FACTION_TOP: '&a{%0}. &7{%1} &e- &7{%2}'
+OTHER_FACTION_TOP: '&7{%0}. &7{%1} &e- &7{%2}'
 
 CLAIMING_FIRST_POSITION: 'First position was set to X: {%0} Z: {%1}'
 CLAIMING_SECOND_POSITION: 'Second position was set to X: {%0} Z: {%1}'

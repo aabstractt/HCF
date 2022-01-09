@@ -7,7 +7,7 @@ namespace hcf\faction\async;
 use hcf\task\QueryAsyncTask;
 use hcf\utils\MySQL;
 
-class DeleteFactionAsync extends QueryAsyncTask {
+class DeleteClaimAsync extends QueryAsyncTask {
 
     /**
      * @param int $rowId
@@ -20,17 +20,7 @@ class DeleteFactionAsync extends QueryAsyncTask {
      * @param MySQL $mysqli
      */
     public function query(MySQL $mysqli): void {
-        $mysqli->prepareStatement("DELETE FROM player_factions WHERE rowId = ?");
-        $mysqli->set($this->rowId);
-
-        $mysqli->executeStatement()->close();
-
         $mysqli->prepareStatement("DELETE FROM faction_claims WHERE factionRowId = ?");
-        $mysqli->set($this->rowId);
-
-        $mysqli->executeStatement()->close();
-
-        $mysqli->prepareStatement("DELETE FROM faction_home WHERE factionRowId = ?");
         $mysqli->set($this->rowId);
 
         $mysqli->executeStatement()->close();

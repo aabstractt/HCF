@@ -7,6 +7,10 @@ main: hcf\HCF
 permissions:
   faction.admin.forcedisband:
     default: op
+  faction.admin.forcejoin:
+    default: op
+  faction.admin.forceunclaim:
+    default: op
   faction.admin.setdtr:
     default: op
   faction.admin.decreasebalance:

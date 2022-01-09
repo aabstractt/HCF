@@ -17,11 +17,11 @@ use pocketmine\scheduler\Task;
 class EventHeartbeat extends Task {
 
     public function onRun(): void {
-        foreach(HCF::getInstance()->getEventManager()->getEvents() as $event) {
+        /*foreach(HCF::getInstance()->getEventManager()->getEvents() as $event) {
             if($event->isEnabled()) {
                 $event->decreaseTime();
             }
-        }
+        }*/
     }
 
 }

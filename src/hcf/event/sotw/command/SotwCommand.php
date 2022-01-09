@@ -7,32 +7,22 @@
 
 declare(strict_types=1);
 
-
 namespace hcf\event\sotw\command;
-
 
 use hcf\api\Command;
 use hcf\event\sotw\command\argument\HelpArgument;
 use hcf\event\sotw\command\argument\StartArgument;
 use hcf\event\sotw\command\argument\StopArgument;
-use pocketmine\command\CommandSender;
 
 class SotwCommand extends Command {
 
     public function __construct() {
-        $this->setPermission("command.sotw");
+        parent::__construct("sotw", "Sotw commands");
+
         $this->addArgument(
             new HelpArgument(),
-            new StartArgument(),
-            new StopArgument()
+            new StartArgument("start", ["enable", "on"]),
+            new StopArgument("stop", ["disable", "off"])
         );
-        parent::__construct("sotw", "Sotw commands");
     }
-
-    public function execute(CommandSender $sender, string $commandLabel, array $args): void {
-        if($this->testPermission($sender)) {
-            parent::execute($sender, $commandLabel, $args);
-        }
-    }
-
 }

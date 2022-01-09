@@ -12,8 +12,11 @@ namespace hcf\event;
 
 
 use hcf\event\sotw\SotwEvent;
+use pocketmine\utils\SingletonTrait;
 
 class EventManager {
+
+    use SingletonTrait;
 
     /** @var Event[] */
     private array $events;

@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace hcf\faction\command\argument\member;
+namespace hcf\faction\command\argument\coleader;
 
 use hcf\api\Argument;
-use hcf\faction\FactionFactory;
+use hcf\faction\ClaimZone;
 use hcf\faction\type\FactionRank;
-use hcf\faction\type\PlayerFaction;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;
+use pocketmine\entity\Location;
+use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-class FactionLeaveArgument extends Argument {
+class FactionClaimArgument extends Argument {
 
     /**
      * @param CommandSender $sender
@@ -37,25 +38,24 @@ class FactionLeaveArgument extends Argument {
             return;
         }
 
-        if ($session->getFactionRank() === FactionRank::LEADER() && $faction instanceof PlayerFaction) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('YOU_CANNOT_LEAVE_FACTION_LEAD'));
+        if (!$session->getFactionRank()->isAtLeast(FactionRank::COLEADER())) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_NOT_COLEADER'));
 
             return;
         }
 
-        if (($targetFaction = FactionFactory::getInstance()->getFactionAt($sender->getPosition())) !== null && $targetFaction->getRowId() === $faction->getRowId()) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('MUST_LEAVE_FACTION_TERRITORY'));
+        if ($faction->getClaimZone() !== null) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_ALREADY_HAVE_CLAIM'));
 
             return;
         }
 
-        $sender->sendMessage(Placeholders::replacePlaceholders('PLAYER_FACTION_LEFT'));
-        $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_PLAYER_LEFT', $sender->getName()));
+        if ($session->getClaimZone() === null) {
+            $session->setClaimZone(new ClaimZone($faction->getRowId(), new Location(0, 0, 0, $sender->getWorld(), 0, 0), new Location(0, 0, 0, $sender->getWorld(), 0, 0)));
+        } else {
+            $session->setClaimZone(null);
+        }
 
-        $faction->removeMember($sender->getXuid());
-
-        $session->setFaction();
-        $session->setFactionRank(FactionRank::MEMBER());
-        $session->save();
+        $sender->sendMessage(Placeholders::replacePlaceholders('PLAYER_FACTION_' . ($session->getClaimZone() !== null ? 'START' : 'STOP') . '_CLAIMING'));
     }
 }

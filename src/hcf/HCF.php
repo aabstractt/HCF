@@ -11,13 +11,13 @@ use hcf\faction\command\FactionCommand;
 use hcf\faction\FactionFactory;
 use hcf\listener\PlayerDeathListener;
 use hcf\listener\PlayerJoinListener;
+use hcf\listener\PlayerMoveListener;
 use hcf\listener\PlayerQuitListener;
 use hcf\listener\SotwListener;
 use pocketmine\command\Command;
+use hcf\listener\type\ClaimChatListener;
+use hcf\listener\type\ClaimInteractListener;
 use pocketmine\event\Listener;
-use pocketmine\permission\DefaultPermissions;
-use pocketmine\permission\Permission;
-use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 
@@ -46,7 +46,11 @@ class HCF extends PluginBase {
             new PlayerJoinListener(),
             new PlayerQuitListener(),
             new PlayerDeathListener(),
-            new SotwListener()
+            new SotwListener(),
+            new PlayerMoveListener(),
+            new PlayerDeathListener(),
+            new ClaimInteractListener(),
+            new ClaimChatListener()
         );
 
         $this->getScheduler()->scheduleRepeatingTask(new EventHeartbeat(), 20); // 1 tick

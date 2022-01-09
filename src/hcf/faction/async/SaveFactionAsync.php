@@ -22,7 +22,7 @@ class SaveFactionAsync extends QueryAsyncTask {
     public function query(MySQL $mysqli): void {
         $s = (array) unserialize($this->serialized);
 
-        if (($s['rowId'] ?? -1) === -1) {
+        if (!isset($s['rowId'])) {
             $mysqli->prepareStatement("INSERT INTO player_factions (name, deathsUntilRaidable) VALUES (?, ?)");
             $mysqli->set(...$s);
 

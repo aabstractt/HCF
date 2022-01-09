@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace hcf\faction\command\argument\member;
 
 use hcf\api\Argument;
-use hcf\faction\FactionFactory;
-use hcf\faction\type\FactionRank;
-use hcf\faction\type\PlayerFaction;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-class FactionLeaveArgument extends Argument {
+class FactionDepositArgument extends Argument {
 
     /**
      * @param CommandSender $sender
@@ -37,25 +34,36 @@ class FactionLeaveArgument extends Argument {
             return;
         }
 
-        if ($session->getFactionRank() === FactionRank::LEADER() && $faction instanceof PlayerFaction) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('YOU_CANNOT_LEAVE_FACTION_LEAD'));
+        if (count($args) === 0) {
+            $sender->sendMessage(TextFormat::RED . sprintf('Usage: /%s %s <amount|all>', $commandLabel, $argumentLabel));
+
+            return;
+        }if ($args[0] === 'all') {
+            $amount = $session->getBalance();
+        } else if (!is_int(($amount = $args[0]))) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('INVALID_NUMBER', $args[0]));
 
             return;
         }
 
-        if (($targetFaction = FactionFactory::getInstance()->getFactionAt($sender->getPosition())) !== null && $targetFaction->getRowId() === $faction->getRowId()) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('MUST_LEAVE_FACTION_TERRITORY'));
+        if ($amount <= 0) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('AMOUNT_MUST_BE_POSITIVE'));
 
             return;
         }
 
-        $sender->sendMessage(Placeholders::replacePlaceholders('PLAYER_FACTION_LEFT'));
-        $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_PLAYER_LEFT', $sender->getName()));
+        if ($amount > $session->getBalance()) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('NOT_ENOUGH_BALANCE', (string) $amount, (string) $session->getBalance()));
 
-        $faction->removeMember($sender->getXuid());
+            return;
+        }
 
-        $session->setFaction();
-        $session->setFactionRank(FactionRank::MEMBER());
+        $session->decreaseBalance($amount);
+        $faction->increaseBalance($amount);
+
         $session->save();
+        $faction->save();
+
+        $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_MEMBER_DEPOSITED', $session->getName(), (string) $amount));
     }
 }

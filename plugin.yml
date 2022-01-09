@@ -7,3 +7,21 @@ main: hcf\HCF
 permissions:
   command.sotw:
     default: op
+  faction.admin.forcedisband:
+    default: op
+  faction.admin.forcecreate:
+    default: op
+  faction.admin.forcejoin:
+    default: op
+  faction.admin.forceunclaim:
+    default: op
+  faction.admin.setdtr:
+    default: op
+  faction.admin.decreasebalance:
+    default: op
+  faction.admin.addbalance:
+    default: op
+  faction.admin.decreasepoints:
+    default: op
+  faction.admin.addpoints:
+    default: op

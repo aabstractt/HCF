@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace hcf\faction\command\argument\member;
+namespace hcf\faction\command\argument\coleader;
 
 use hcf\api\Argument;
+use hcf\faction\async\SaveHomeAsync;
 use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
-use hcf\faction\type\PlayerFaction;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
+use hcf\task\QueryAsyncTask;
+use hcf\TaskUtils;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-class FactionLeaveArgument extends Argument {
+class FactionSetHomeArgument extends Argument {
 
     /**
      * @param CommandSender $sender
@@ -37,25 +39,22 @@ class FactionLeaveArgument extends Argument {
             return;
         }
 
-        if ($session->getFactionRank() === FactionRank::LEADER() && $faction instanceof PlayerFaction) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('YOU_CANNOT_LEAVE_FACTION_LEAD'));
+        if (!$session->getFactionRank()->isAtLeast(FactionRank::COLEADER())) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_NOT_COLEADER'));
 
             return;
         }
 
-        if (($targetFaction = FactionFactory::getInstance()->getFactionAt($sender->getPosition())) !== null && $targetFaction->getRowId() === $faction->getRowId()) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('MUST_LEAVE_FACTION_TERRITORY'));
+        if (($targetFaction = FactionFactory::getInstance()->getFactionAt(($loc = $sender->getLocation()))) !== null && $targetFaction->getRowId() !== $faction->getRowId()) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('YOU_CANNOT_DO_THIS_HERE'));
 
             return;
         }
 
-        $sender->sendMessage(Placeholders::replacePlaceholders('PLAYER_FACTION_LEFT'));
-        $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_PLAYER_LEFT', $sender->getName()));
+        TaskUtils::runAsync(new SaveHomeAsync($faction->getRowId(), Placeholders::locationToString($loc), $faction->getHomePosition() === null), function (QueryAsyncTask $query) use ($faction, $loc, $sender): void {
+            $faction->setHomePosition($loc);
 
-        $faction->removeMember($sender->getXuid());
-
-        $session->setFaction();
-        $session->setFactionRank(FactionRank::MEMBER());
-        $session->save();
+            $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_HOME_CHANGED', $sender->getName()));
+        });
     }
 }

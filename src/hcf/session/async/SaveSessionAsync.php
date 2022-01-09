@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace hcf\session\async;
 
-use hcf\task\QueryAsyncTask;
 use hcf\utils\MySQL;
 use mysqli_result;
 use pocketmine\plugin\PluginException;
 
-class SaveSessionAsync extends QueryAsyncTask {
+class SaveSessionAsync extends LoadSessionAsync {
 
     /**
      * @param string $xuid
@@ -26,12 +25,24 @@ class SaveSessionAsync extends QueryAsyncTask {
         private int $rankId,
         private int $lives,
         private int $balance
-    ) {}
+    ) {
+        parent::__construct($this->xuid);
+    }
 
     /**
      * @param MySQL $mysqli
      */
     public function query(MySQL $mysqli): void {
+        if ($this->balance === -1) {
+            parent::query($mysqli);
+
+            if (!is_array($fetch = $this->getResult())) {
+                throw new PluginException('Player not found');
+            }
+
+            $this->balance = $fetch['balance'];
+        }
+
         $mysqli->prepareStatement("SELECT * FROM players WHERE xuid = ?");
         $mysqli->set($this->xuid);
 

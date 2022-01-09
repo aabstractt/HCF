@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace hcf;
 
 use hcf\task\QueryAsyncTask;
+use pocketmine\scheduler\Task;
 use pocketmine\Server;
 
 class TaskUtils {
@@ -80,5 +81,21 @@ class TaskUtils {
         }
 
         $callable($query);
+    }
+
+    /**
+     * @param Task $task
+     * @param int  $ticks
+     */
+    public static function scheduleRepeating(Task $task, int $ticks = 20): void {
+        HCF::getInstance()->getScheduler()->scheduleRepeatingTask($task, $ticks);
+    }
+
+    /**
+     * @param Task $task
+     * @param int  $delay
+     */
+    public static function scheduleDelayed(Task $task, int $delay = 20): void {
+        HCF::getInstance()->getScheduler()->scheduleDelayedTask($task, $delay);
     }
 }

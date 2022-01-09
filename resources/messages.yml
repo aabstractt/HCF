@@ -1,50 +1,76 @@
-FACTION_NAME_TOO_SHORT: '&cThe name must be at least {%0} characters.'
-FACTION_NAME_TOO_LONG: '&cThe name cannot be longer than {%0} characters'
-FACTION_ALREADY_EXISTS: '&cThat name is already in use.'
-FACTION_NOT_INVITED: '&cThis faction has not invited you.'
-FACTION_NOT_FOUND: '&cFaction {%0} not found'
-FACTION_INVITE_RECEIVED: '&e{%0} has invited you to join {%1}.'
-
-COMMAND_FACTION_ATTEMPT_CREATE: '&cYou must leave you current faction before you create one.'
-COMMAND_FACTION_ACTION_COOLDOWN: '&eYou must wait 1 minute between creating and disbanding a faction.'
-COMMAND_FACTION_RAIDABLE: '&cYou cannot do this while your faction is raidable.'
-COMMAND_FACTION_NOT_CAPTAIN: '&cYou must be a captain or above to do this.'
-COMMAND_FACTION_ATTEMPT_JOIN: '&cYou must leave you current faction before you join another one.'
+FACTION_NAME_TOO_SHORT: '&4The name must be at least {%0} characters long.'
+FACTION_NAME_TOO_LONG: '&4The name cannot be longer than {%0} characters'
+FACTION_ALREADY_EXISTS: '&4That name is already in use.'
+FACTION_NOT_INVITED: '&4This faction has not invited you.'
+FACTION_NOT_FOUND: '&4Faction {%0} not found'
+FACTION_INVITE_RECEIVED: '&4{%0} has invited you to join {%1}.'
+FACTION_MEMBER_DEPOSITED: "{%0}&e has deposited &e${%1}&e into the faction balance."
+FACTION_NOT_ENOUGH_BALANCE: "The faction doesn't have enough money to do this."
+FACTION_PLAYER_PROMOTED: '&7{%0}&2{%1}&e has been assigned as a faction &f{%2}&e.'
+FACTION_DTR_UPDATED: "Faction dtr was set to {%1}"
+FACTION_CLAIM_COMPLETED: "Claim was successfully completed"
+FACTION_CLAIM_NOT_FOUND: "Claim for faction {%0} not found"
+FACTION_CLAIM_SUCCESSFULLY_REMOVED: "Claim for faction {%0} was successfully removed."
 
 MUST_ENABLE_SOTW: "&cYou have to enable the sotw event to do this."
 MUST_DISABLE_SOTW: "&cYou have to disable the sotw event to do this."
 SOTW_SUCCESSFULLY_DISABLED: "&aYou have successfully disabled the sotw event."
 SOTW_SUCCESSFULLY_ENABLED: "&aYou have successfully enabled the sotw event."
 
-YOU_CANNOT_LEAVE_FACTION_LEAD: '&cYou cannot leave a faction you lead.'
-MUST_LEAVE_FACTION_TERRITORY: "&cYou must leave your faction's territory before leaving."
-YOU_CANT_USE_THIS_ON_YOURSELF: "You can't use this on yourself"
+COMMAND_FACTION_ATTEMPT_CREATE: '&4You must leave you current faction before you create one.'
+COMMAND_FACTION_ACTION_COOLDOWN: '&4You must wait 1 minute between creating and disbanding a faction.'
+COMMAND_FACTION_RAIDABLE: '&4You cannot do this while your faction is raidable.'
+COMMAND_FACTION_NOT_CAPTAIN: '&4You must be a captain or above to do this.'
+COMMAND_FACTION_ATTEMPT_JOIN: '&4You must leave you current faction before you join another one.'
+COMMAND_FACTION_TOP:
+  - '&7&m--------------------------------------'
+  - "{%0}"
+  - '&7&m--------------------------------------'
+
+YOU_CANNOT_LEAVE_FACTION_LEAD: '&4You cannot leave a faction you lead.'
+MUST_LEAVE_FACTION_TERRITORY: "&4You must leave your faction's territory before leaving."
+YOU_CANT_USE_THIS_ON_YOURSELF: "§4You can't use this on yourself"
 
 PLAYER_ATTEMPT_JOIN_ON_FREEZE: '&cYou cannot join this faction because they are on dtr freeze.'
 PLAYER_IN_FACTION: '&c{%0} is already in a faction!'
 PLAYER_ALREADY_INVITED: '&c{%0} has already been invited before!'
 PLAYER_ALREADY_MEMBER: '&c{%0} is already your faction.'
 PLAYER_FACTION_INVITE_SENT: '&e{%0} has been invited to the faction by {%1}.'
+PLAYER_WITHDREW_BALANCE: "&d{%0}&e has withdrew &d$%{%1}&e from the faction balance."
+
+YOU_WITHDRAWN_BALANCE: "&eYou have withdrawn &d${%0}&e from the faction balance."
 
 PLAYER_JOINED_FACTION: '&a{%0}&e has joined the faction!'
 FACTION_PLAYER_LEFT: '&c{%0} has left the faction.'
 PLAYER_FACTION_LEFT: '&eYou have left your faction.'
 
 FACTION_FULL: '&cFaction {%0} is full!'
+INVALID_NUMBER: '&c{%0} is a invalid value'
+AMOUNT_MUST_BE_POSITIVE: "&cAmount must be positive."
+NOT_ENOUGH_BALANCE: "&cYou need at least &l${%0}&r&c to do this, you only have &l${%1}"
+FIRST_FACTION_TOP: '&a{%0}. &7{%1} &e- &7{%2}'
+OTHER_FACTION_TOP: '&7{%0}. &7{%1} &e- &7{%2}'
+
+CLAIMING_FIRST_POSITION: 'First position was set to X: {%0} Z: {%1}'
+CLAIMING_SECOND_POSITION: 'Second position was set to X: {%0} Z: {%1}'
+CLAIM_INVALID_SIZE: 'Claim size is invalid'
+CLAIMING_COST: 'Cost claim is {%0}'
+CANNOT_CLAIM_HERE: 'You cannot claim here'
+CLAIMING_NOT_SELECTED: 'You not selected any position'
 
 FACTION_WHO_PLAYER:
   - '&7&m--------------------------------------'
-  - '&9{%0} &7[{%1}/{%2}] &3- &eHQ: &f0, 0'
-  - '&eLeader: &d{%3}'
-  - '&eCo-Leaders: &d{%4}'
-  - '&eCaptain: &d{%5}'
-  - '&eMembers: &d{%6}'
-  - '&eBalance: &9${%7}'
-  - '&eDeaths until Raidable: &9{%8}'
-  - '{%9}' #FACTION_WHO_UNTIL_REGEN
-  - '&ePoints: &9{%10}'
-  - '&eLives: &9{%11}'
-  - '&eAnnouncement: &d{%12}'
+  - '&9{%0} &7[{%1}/{%2}] &3- &eHQ: {%3}'
+  - '&eLeader: &d{%4}'
+  - '&eCo-Leaders: &d{%5}'
+  - '&eCaptain: &d{%6}'
+  - '&eMembers: &d{%7}'
+  - '&eBalance: &9${%8}'
+  - '&eDeaths until Raidable: &9{%9}'
+  - '{%10}' #FACTION_WHO_UNTIL_REGEN
+  - '&ePoints: &9{%11}'
+  - '&eLives: &9{%12}'
+  - '&eAnnouncement: &d{%13}'
   - '&7&m--------------------------------------'
 FACTION_WHO_SERVER:
   - "&7&m--------------------------------------"
@@ -53,3 +79,5 @@ FACTION_WHO_SERVER:
   - "&7&m--------------------------------------"
 
 FACTION_WHO_UNTIL_REGEN: '&eTime until regen: &9{%0}'
+FACTION_WHO_HOME: 'X: {%0} Z: {%1}'
+FACTION_WHO_HOME_NOT_SET: 'Not Set'

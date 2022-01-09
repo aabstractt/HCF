@@ -8,10 +8,15 @@ use hcf\faction\async\SaveFactionAsync;
 use hcf\faction\type\FactionMember;
 use hcf\TaskUtils;
 use hcf\utils\Serializable;
+use pocketmine\entity\Location;
 use pocketmine\Server;
 
 class Faction extends Serializable {
 
+    /** @var Location|null */
+    private ?Location $homePosition = null;
+    /** @var ClaimZone|null */
+    protected ?ClaimZone $claimZone = null;
     /** @var array */
     private array $invited = [];
 
@@ -88,7 +93,7 @@ class Faction extends Serializable {
      * @return bool
      */
     public function isMember(string $xuid): bool {
-        return isset($this->members[$xuid]);
+        return $this->getMember($xuid) !== null;
     }
 
     /**
@@ -97,7 +102,14 @@ class Faction extends Serializable {
      * @return FactionMember|null
      */
     public function getMember(string $xuid): ?FactionMember {
-        return $this->members[$xuid] ?? null;
+        return $this->members[$xuid] ?? array_values(array_filter($this->members, fn(FactionMember $member) => strtolower($member->getName()) === strtolower($xuid)))[0] ?? null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInvited(): array {
+        return $this->invited;
     }
 
     /**
@@ -106,16 +118,15 @@ class Faction extends Serializable {
      * @return bool
      */
     public function isAlreadyInvited(string $xuid): bool {
-        return in_array($xuid, $this->invited, true);
+        return isset($this->invited[$xuid]) || in_array($xuid, $this->invited, true);
     }
 
     /**
      * @param string $xuid
-     *
-     * @return void
+     * @param string $name
      */
-    public function addInvite(string $xuid): void {
-        $this->invited[] = $xuid;
+    public function addInvite(string $xuid, string $name): void {
+        $this->invited[$xuid] = $name;
     }
 
     /**
@@ -124,7 +135,7 @@ class Faction extends Serializable {
      * @return void
      */
     public function removeInvite(string $xuid): void {
-        $this->invited = array_diff($this->invited, [$xuid]);
+        unset($this->invited[$xuid]);
     }
 
     /**
@@ -182,6 +193,34 @@ class Faction extends Serializable {
         }
     }
 
+    /**
+     * @param Location $pos
+     */
+    public function setHomePosition(Location $pos): void {
+        $this->homePosition = $pos;
+    }
+
+    /**
+     * @return Location|null
+     */
+    public function getHomePosition(): ?Location {
+        return $this->homePosition;
+    }
+
+    /**
+     * @param ClaimZone|null $claimZone
+     */
+    public function setClaimZone(?ClaimZone $claimZone): void {
+        $this->claimZone = $claimZone;
+    }
+
+    /**
+     * @return ClaimZone|null
+     */
+    public function getClaimZone(): ?ClaimZone {
+        return $this->claimZone;
+    }
+
     public function save(): void {
         TaskUtils::runAsync(new SaveFactionAsync($this->serializeString()));
     }
@@ -195,7 +234,7 @@ class Faction extends Serializable {
     public function serializeString(array $merge = [], bool $static = false): string {
         $serialized = $this->serialize($merge, $static);
 
-        unset($serialized['members'], $serialized['leader']);
+        unset($serialized['members'], $serialized['leader'], $serialized['homePosition'], $serialized['claimZone']);
 
         return serialize($serialized);
     }

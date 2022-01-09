@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace hcf\faction\command\argument\member;
+namespace hcf\faction\command\argument\leader;
 
 use hcf\api\Argument;
 use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
-use hcf\faction\type\PlayerFaction;
+use hcf\HCF;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
-class FactionLeaveArgument extends Argument {
+class FactionDisbandArgument extends Argument {
 
     /**
      * @param CommandSender $sender
@@ -37,25 +38,16 @@ class FactionLeaveArgument extends Argument {
             return;
         }
 
-        if ($session->getFactionRank() === FactionRank::LEADER() && $faction instanceof PlayerFaction) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('YOU_CANNOT_LEAVE_FACTION_LEAD'));
+        if (!$session->getFactionRank()->isAtLeast(FactionRank::LEADER())) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_NOT_LEADER'));
 
             return;
         }
 
-        if (($targetFaction = FactionFactory::getInstance()->getFactionAt($sender->getPosition())) !== null && $targetFaction->getRowId() === $faction->getRowId()) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('MUST_LEAVE_FACTION_TERRITORY'));
+        $session->setLastFactionEdit(HCF::dateNow());
 
-            return;
-        }
+        FactionFactory::getInstance()->disbandFaction($faction);
 
-        $sender->sendMessage(Placeholders::replacePlaceholders('PLAYER_FACTION_LEFT'));
-        $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_PLAYER_LEFT', $sender->getName()));
-
-        $faction->removeMember($sender->getXuid());
-
-        $session->setFaction();
-        $session->setFactionRank(FactionRank::MEMBER());
-        $session->save();
+        Server::getInstance()->broadcastMessage(Placeholders::replacePlaceholders('FACTION_DISBANDED', $sender->getName(), $faction->getName()));
     }
 }

@@ -23,8 +23,10 @@ class PlayerDeathListener implements Listener {
 
         $session = SessionFactory::getInstance()->getPlayerSession($player);
 
-        /** @var PlayerFaction $faction */
-        $faction = $session->getFactionNonNull();
+        /** @var $faction PlayerFaction */
+        if (!($faction = $session->getFaction()) instanceof PlayerFaction) {
+            return;
+        }
 
         $newDtr = $faction->setDeathsUntilRaidable($faction->getDeathsUntilRaidable() - 1.0);
 

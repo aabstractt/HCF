@@ -18,3 +18,24 @@ factions:
 
   claim_distance: 50
   amount_per_block: 5.0
+
+  invalid-names:
+    - 'Road'
+    - 'Spawn'
+
+scoreboard:
+  title: "&6&lHCF"
+  lines:
+    - "&f"
+    - "Claim: {%0}"
+    - "Spawn Tag: {%1}<display={%2}"
+    - "SOTW: {%3} <display=SOTW"
+    - "EOTW: {%4} <display=EOTW"
+    - "&d"
+    - "server.com"
+  mod-lines:
+    - "Staff Mode"
+  koth-lines:
+    normal: ""
+    special: ""
+  custom-timer: "{%0}: {%1}"

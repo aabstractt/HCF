@@ -30,7 +30,7 @@ class SessionFactory {
             if (!is_array($fetch = $query->getResult()) || count($fetch) === 0) {
                 $session = new Session($player->getXuid(), $player->getName(), FactionRank::MEMBER());
             } else {
-                $session = new Session($player->getXuid(), $player->getName(), FactionRank::valueOf($fetch['rankId']), 0, FactionFactory::getInstance()->getFaction($fetch['factionRowId']));
+                $session = new Session($player->getXuid(), $player->getName(), FactionRank::valueOf($fetch['rankId']), 0, $fetch['factionRowId']);
             }
 
             $this->sessions[strtolower($session->getName())] = $session;

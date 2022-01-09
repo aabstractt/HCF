@@ -7,6 +7,7 @@ namespace hcf\faction\command\argument\member;
 use hcf\api\Argument;
 use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
+use hcf\faction\type\PlayerFaction;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;
@@ -36,7 +37,7 @@ class FactionLeaveArgument extends Argument {
             return;
         }
 
-        if ($session->getFactionRank() === FactionRank::LEADER()) {
+        if ($session->getFactionRank() === FactionRank::LEADER() && $faction instanceof PlayerFaction) {
             $sender->sendMessage(Placeholders::replacePlaceholders('YOU_CANNOT_LEAVE_FACTION_LEAD'));
 
             return;
@@ -48,12 +49,10 @@ class FactionLeaveArgument extends Argument {
             return;
         }
 
-
         $sender->sendMessage(Placeholders::replacePlaceholders('PLAYER_FACTION_LEFT'));
         $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_PLAYER_LEFT', $sender->getName()));
 
         $faction->removeMember($sender->getXuid());
-        $faction->save();
 
         $session->setFaction();
         $session->setFactionRank(FactionRank::MEMBER());

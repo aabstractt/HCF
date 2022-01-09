@@ -141,13 +141,6 @@ class PlayerFaction extends Faction {
     }
 
     /**
-     * @return string
-     */
-    public function getDtrSymbol(): string {
-        return ['&c■', '&6⇪', '&a▶'][$this->getRegenStatus()];
-    }
-
-    /**
      * @param bool $updateLastCheck
      *
      * @return float

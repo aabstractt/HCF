@@ -6,6 +6,7 @@ namespace hcf\session;
 
 use hcf\faction\ClaimZone;
 use hcf\faction\Faction;
+use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
 use hcf\session\async\SaveSessionAsync;
 use hcf\TaskUtils;
@@ -23,19 +24,19 @@ class Session {
     private ?ClaimZone $claimZone = null;
 
     /**
-     * @param string       $xuid
-     * @param string       $name
-     * @param FactionRank  $factionRank
-     * @param int          $balance
-     * @param Faction|null $faction
-     * @param string|null  $lastFactionEdit
+     * @param string      $xuid
+     * @param string      $name
+     * @param FactionRank $factionRank
+     * @param int         $balance
+     * @param int         $factionRowId
+     * @param string|null $lastFactionEdit
      */
     public function __construct(
         private string $xuid,
         private string $name,
         private FactionRank $factionRank,
         private int $balance = 0,
-        private ?Faction $faction = null,
+        private int $factionRowId = -1,
         private ?string $lastFactionEdit = null
     ) {}
 
@@ -73,21 +74,21 @@ class Session {
      * @return Faction|null
      */
     public function getFaction(): ?Faction {
-        return $this->faction;
+        return FactionFactory::getInstance()->getFaction($this->factionRowId);
     }
 
     /**
      * @return Faction
      */
     public function getFactionNonNull(): Faction {
-        return $this->faction ?? throw new PluginException('Faction is null');
+        return $this->getFaction() ?? throw new PluginException('Faction is null');
     }
 
     /**
      * @param Faction|null $faction
      */
     public function setFaction(?Faction $faction = null): void {
-        $this->faction = $faction;
+        $this->factionRowId = $faction === null ? -1 : $faction->getRowId();
     }
 
     /**
@@ -178,12 +179,6 @@ class Session {
     }
 
     public function save(): void {
-        $rowId = -1;
-
-        if ($this->faction !== null) {
-            $rowId = $this->faction->getRowId();
-        }
-
-        TaskUtils::runAsync(new SaveSessionAsync($this->xuid, $this->name, $rowId, $this->factionRank->ordinal(), 1, $this->balance));
+        TaskUtils::runAsync(new SaveSessionAsync($this->xuid, $this->name, $this->factionRowId, $this->factionRank->ordinal(), 1, $this->balance));
     }
 }

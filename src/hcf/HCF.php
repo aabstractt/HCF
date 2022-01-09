@@ -10,6 +10,8 @@ use hcf\listener\PlayerDeathListener;
 use hcf\listener\PlayerJoinListener;
 use hcf\listener\PlayerMoveListener;
 use hcf\listener\PlayerQuitListener;
+use hcf\listener\type\ClaimChatListener;
+use hcf\listener\type\ClaimInteractListener;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
@@ -32,7 +34,9 @@ class HCF extends PluginBase {
             new PlayerJoinListener(),
             new PlayerQuitListener(),
             new PlayerMoveListener(),
-            new PlayerDeathListener()
+            new PlayerDeathListener(),
+            new ClaimInteractListener(),
+            new ClaimChatListener()
         );
     }
 

@@ -20,12 +20,6 @@ class FactionAddPointsArgument extends Argument {
      * @param array         $args
      */
     public function run(CommandSender $sender, string $commandLabel, string $argumentLabel, array $args): void {
-        if (!$sender instanceof Player) {
-            $sender->sendMessage(TextFormat::RED . 'Run this command in-game');
-
-            return;
-        }
-
         if (count($args) < 2) {
             $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' addpoints <faction> <value>');
 

@@ -11,6 +11,8 @@ use pocketmine\world\Position;
 use pocketmine\world\World;
 
 class ClaimZone {
+    /** @var bool */
+    public bool $created = false;
 
     /**
      * @param int      $factionRowId
@@ -32,10 +34,24 @@ class ClaimZone {
     }
 
     /**
+     * @param Location $firsCorner
+     */
+    public function setFirsCorner(Location $firsCorner): void {
+        $this->firsCorner = $firsCorner;
+    }
+
+    /**
      * @return Location
      */
     public function getFirsCorner(): Location {
         return $this->firsCorner;
+    }
+
+    /**
+     * @param Location $secondCorner
+     */
+    public function setSecondCorner(Location $secondCorner): void {
+        $this->secondCorner = $secondCorner;
     }
 
     /**

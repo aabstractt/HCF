@@ -81,9 +81,9 @@ class FactionFactory {
                 }
 
                 foreach ($factionData['claims'] ?? [] as $claimData) {
-                    $this->claims[$claimData['rowId']] = ClaimZone::deserialize($claimData);
+                    $this->claims[$faction->getRowId()] = ($claimZone = ClaimZone::deserialize($claimData));
 
-                    $faction->setClaimZone(ClaimZone::deserialize($claimData));
+                    $faction->setClaimZone($claimZone);
                 }
 
                 $this->factionNames[$faction->getName()] = $faction->getRowId();
@@ -197,6 +197,13 @@ class FactionFactory {
         }
 
         return null;
+    }
+
+    /**
+     * @param ClaimZone $claimZone
+     */
+    public function addClaim(ClaimZone $claimZone): void {
+        $this->claims[$claimZone->getFactionRowId()] = $claimZone;
     }
 
     /**

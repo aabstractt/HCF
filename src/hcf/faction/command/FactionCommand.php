@@ -6,6 +6,7 @@ namespace hcf\faction\command;
 
 use hcf\api\Command;
 use hcf\faction\command\argument\admin\FactionAddBalanceArgument;
+use hcf\faction\command\argument\admin\FactionDecreaseBalanceArgument;
 use hcf\faction\command\argument\admin\FactionDecreasePointsArgument;
 use hcf\faction\command\argument\admin\FactionForceDisbandArgument;
 use hcf\faction\command\argument\admin\FactionSetDtrArgument;
@@ -43,7 +44,7 @@ class FactionCommand extends Command {
             new FactionAddPointsArgument('addpoints', [], 'faction.admin.addpoints'),
             new FactionDecreasePointsArgument('decreasepoints', ['rempoints'], 'faction.admin.decreasepoints'),
             new FactionAddBalanceArgument('addbalance', ['addbal'], 'faction.admin.addbalance'),
-            new FactionDecreasePointsArgument('decreasebalance', ['rembal'], 'faction.admin.decreasebalance'),
+            new FactionDecreaseBalanceArgument('decreasebalance', ['rembal'], 'faction.admin.decreasebalance'),
             new FactionCreateArgument('create'),
             new FactionInviteArgument('invite'),
             new FactionKickArgument('kick'),

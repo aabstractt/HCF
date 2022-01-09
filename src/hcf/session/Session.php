@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace hcf\session;
 
+use hcf\faction\ClaimZone;
 use hcf\faction\Faction;
 use hcf\faction\type\FactionRank;
 use hcf\session\async\SaveSessionAsync;
 use hcf\TaskUtils;
+use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginException;
 use pocketmine\Server;
+use pocketmine\utils\TextFormat;
 
 class Session {
 
     /** @var int */
     private int $homeTeleport = -1;
+    /** @var ClaimZone|null */
+    private ?ClaimZone $claimZone = null;
 
     /**
      * @param string       $xuid
@@ -100,22 +105,6 @@ class Session {
     }
 
     /**
-     * @param int $homeTeleport
-     *
-     * @return void
-     */
-    public function setHomeTeleport(int $homeTeleport): void {
-        $this->homeTeleport = $homeTeleport;
-    }
-
-    /**
-     * @return int
-     */
-    public function getHomeTeleport(): int {
-        return $this->homeTeleport;
-    }
-
-    /**
      * @return int
      */
     public function getBalance(): int {
@@ -134,6 +123,51 @@ class Session {
      */
     public function decreaseBalance(int $decrease = 1): void {
         $this->balance += $decrease;
+    }
+
+    /**
+     * @param int $homeTeleport
+     *
+     * @return void
+     */
+    public function setHomeTeleport(int $homeTeleport): void {
+        $this->homeTeleport = $homeTeleport;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHomeTeleport(): int {
+        return $this->homeTeleport;
+    }
+
+    /**
+     * @param ClaimZone|null $claimZone
+     */
+    public function setClaimZone(?ClaimZone $claimZone): void {
+        $this->claimZone = $claimZone;
+
+        $item = VanillaItems::GOLDEN_HOE();
+
+        if ($claimZone === null) {
+            $this->getInstanceNonNull()->getInventory()->remove($item);
+
+            return;
+        }
+
+        $nbt = $item->getNamedTag();
+        $nbt->setString('custom_item', 'claiming');
+
+        $item->setNamedTag($nbt);
+
+        $this->getInstanceNonNull()->getInventory()->addItem($item->setNamedTag($nbt)->setCustomName(TextFormat::colorize('&r&6&lClaim Tool')));
+    }
+
+    /**
+     * @return ClaimZone|null
+     */
+    public function getClaimZone(): ?ClaimZone {
+        return $this->claimZone;
     }
 
     /**

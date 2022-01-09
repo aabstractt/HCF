@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace hcf\faction\command\argument\coleader;
 
 use hcf\api\Argument;
+use hcf\faction\ClaimZone;
 use hcf\faction\type\FactionRank;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;
+use pocketmine\entity\Location;
+use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
@@ -47,6 +50,12 @@ class FactionClaimArgument extends Argument {
             return;
         }
 
-        $sender->sendMessage(Placeholders::replacePlaceholders('PLAYER_FACTION_CLAIMING'));
+        if ($session->getClaimZone() === null) {
+            $session->setClaimZone(new ClaimZone($faction->getRowId(), new Location(0, 0, 0, $sender->getWorld(), 0, 0), new Location(0, 0, 0, $sender->getWorld(), 0, 0)));
+        } else {
+            $session->setClaimZone(null);
+        }
+
+        $sender->sendMessage(Placeholders::replacePlaceholders('PLAYER_FACTION_' . ($session->getClaimZone() !== null ? 'START' : 'STOP') . '_CLAIMING'));
     }
 }

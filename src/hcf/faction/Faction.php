@@ -16,7 +16,7 @@ class Faction extends Serializable {
     /** @var Location|null */
     private ?Location $homePosition = null;
     /** @var ClaimZone|null */
-    protected ?ClaimZone $claimZone;
+    protected ?ClaimZone $claimZone = null;
     /** @var array */
     private array $invited = [];
 
@@ -234,7 +234,7 @@ class Faction extends Serializable {
     public function serializeString(array $merge = [], bool $static = false): string {
         $serialized = $this->serialize($merge, $static);
 
-        unset($serialized['members'], $serialized['leader']);
+        unset($serialized['members'], $serialized['leader'], $serialized['homePosition'], $serialized['claimZone']);
 
         return serialize($serialized);
     }

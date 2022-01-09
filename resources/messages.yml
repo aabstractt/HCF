@@ -6,6 +6,7 @@ FACTION_NOT_FOUND: '&4Faction {%0} not found'
 FACTION_INVITE_RECEIVED: '&4{%0} has invited you to join {%1}.'
 FACTION_NOT_ENOUGH_BALANCE: "The faction doesn't have enough money to do this."
 FACTION_PLAYER_PROMOTED: '&7{%0}&2{%1}&e has been assigned as a faction &f{%2}&e.'
+FACTION_DTR_UPDATED: "Faction dtr was set to {%1}"
 
 COMMAND_FACTION_ATTEMPT_CREATE: '&4You must leave you current faction before you create one.'
 COMMAND_FACTION_ACTION_COOLDOWN: '&4You must wait 1 minute between creating and disbanding a faction.'

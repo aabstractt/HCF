@@ -11,6 +11,7 @@ use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 class FactionDisbandArgument extends Argument {
@@ -43,5 +44,7 @@ class FactionDisbandArgument extends Argument {
         }
 
         FactionFactory::getInstance()->disbandFaction($faction);
+
+        Server::getInstance()->broadcastMessage(Placeholders::replacePlaceholders('FACTION_DISBANDED', $sender->getName(), $faction->getName()));
     }
 }

@@ -28,7 +28,7 @@ class FactionWithdrawArgument extends Argument {
         }
 
         if (count($args) < 1) {
-            $sender->sendMessage(TextFormat::RED . sprintf("Usage: /%s %s <amount|all>", $commandLabel, $argumentLabel));
+            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' withdraw <amount|all>');
 
             return;
         }

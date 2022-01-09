@@ -15,7 +15,7 @@ use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
-class FactionPromoteArgument extends Argument {
+class FactionDemoteArgument extends Argument {
 
     /**
      * @param CommandSender $sender
@@ -45,7 +45,7 @@ class FactionPromoteArgument extends Argument {
         }
 
         if (count($args) === 0) {
-            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' promote <player>');
+            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' demote <player>');
 
             return;
         }
@@ -68,15 +68,15 @@ class FactionPromoteArgument extends Argument {
             return;
         }
 
-        if ($member->getFactionRank()->isAtLeast($session->getFactionRank()) || $member->getFactionRank()->ordinal() === FactionRank::COLEADER()->ordinal()) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('YOU_CANNOT_PROMOTE_TARGET', $name));
+        if ($member->getFactionRank()->isAtLeast($session->getFactionRank()) || $member->getFactionRank()->ordinal() === FactionRank::MEMBER()->ordinal()) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('YOU_CANNOT_DEMOTE_TARGET', $name));
 
             return;
         }
 
-        $member->setFactionRank($factionRank = $member->getFactionRank() === FactionRank::MEMBER() ? FactionRank::CAPTAIN() : FactionRank::COLEADER());
+        $member->setFactionRank($factionRank = $member->getFactionRank() === FactionRank::COLEADER() ? FactionRank::CAPTAIN() : FactionRank::MEMBER());
 
-        $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_PLAYER_PROMOTED', $factionRank->getStars(), $member->getName(), $factionRank->name()));
+        $faction->broadcastMessage(Placeholders::replacePlaceholders('FACTION_PLAYER_DEMOTED', $factionRank->getStars(), $member->getName(), $factionRank->name()));
 
         if (($targetSession = SessionFactory::getInstance()->getSessionName($member->getName())) !== null) {
             $targetSession->setFactionRank($factionRank);

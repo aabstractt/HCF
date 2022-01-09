@@ -20,6 +20,19 @@ class DeleteFactionAsync extends QueryAsyncTask {
      * @param MySQL $mysqli
      */
     public function query(MySQL $mysqli): void {
-        // TODO: Implement query() method.
+        $mysqli->prepareStatement("DELETE FROM player_factions WHERE rowId = ?");
+        $mysqli->set($this->rowId);
+
+        $mysqli->executeStatement()->close();
+
+        $mysqli->prepareStatement("DELETE FROM faction_claims WHERE rowId = ?");
+        $mysqli->set($this->rowId);
+
+        $mysqli->executeStatement()->close();
+
+        $mysqli->prepareStatement("DELETE FROM faction_home WHERE rowId = ?");
+        $mysqli->set($this->rowId);
+
+        $mysqli->executeStatement()->close();
     }
 }

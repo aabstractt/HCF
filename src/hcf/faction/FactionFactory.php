@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace hcf\faction;
 
+use hcf\faction\async\DeleteFactionAsync;
 use hcf\faction\async\LoadFactionsAsync;
 use hcf\faction\type\FactionMember;
 use hcf\faction\type\FactionRank;
 use hcf\faction\type\PlayerFaction;
 use hcf\HCF;
 use hcf\Placeholders;
+use hcf\session\async\SaveSessionAsync;
 use hcf\session\Session;
 use hcf\session\SessionFactory;
 use hcf\TaskUtils;
@@ -133,7 +135,7 @@ class FactionFactory {
     public function disbandFaction(Faction $faction): void {
         foreach ($faction->getMembers() as $member) {
             if (($session = SessionFactory::getInstance()->getSessionName($member->getName())) === null) {
-                // TODO: Update session
+                TaskUtils::runAsync(new SaveSessionAsync($member->getXuid(), $member->getName(), -1, 0, 0, -1));
 
                 continue;
             }
@@ -144,7 +146,9 @@ class FactionFactory {
             $session->save();
         }
 
-        // TODO: Execute DisbandFactionAsync
+        TaskUtils::runAsync(new DeleteFactionAsync($faction->getRowId()));
+
+        unset($this->factions[$faction->getRowId()], $this->factionNames[$faction->getName()]);
     }
 
     /**

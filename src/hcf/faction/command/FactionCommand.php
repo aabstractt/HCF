@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace hcf\faction\command;
 
 use hcf\api\Command;
+use hcf\faction\command\argument\admin\FactionDecreasePointsArgument;
+use hcf\faction\command\argument\admin\FactionForceDisbandArgument;
+use hcf\faction\command\argument\admin\FactionSetDtrArgument;
+use hcf\faction\command\argument\admin\FactionAddPointsArgument;
 use hcf\faction\command\argument\captain\FactionInviteArgument;
+use hcf\faction\command\argument\coleader\FactionDemoteArgument;
 use hcf\faction\command\argument\coleader\FactionKickArgument;
 use hcf\faction\command\argument\coleader\FactionPromoteArgument;
 use hcf\faction\command\argument\coleader\FactionSetHomeArgument;
@@ -31,10 +36,17 @@ class FactionCommand extends Command {
         parent::__construct($name, $description, $usageMessage, $aliases);
 
         $this->addArgument(
+            new FactionForceDisbandArgument('forcedisband', [], 'faction.admin.forcedisband'),
+            new FactionSetDtrArgument('setdtr', [], 'faction.admin.setdtr'),
+            new FactionAddPointsArgument('addpoints', [], 'faction.admin.addpoints'),
+            new FactionDecreasePointsArgument('decreasepoints', ['rempoints'], 'faction.admin.decreasepoints'),
+            new FactionAddPointsArgument('addbalance', ['addbal'], 'faction.admin.addbalance'),
+            new FactionDecreasePointsArgument('decreasebalance', ['rembal'], 'faction.admin.decreasebalance'),
             new FactionCreateArgument('create'),
             new FactionInviteArgument('invite'),
             new FactionKickArgument('kick'),
             new FactionPromoteArgument('promote'),
+            new FactionDemoteArgument('demote'),
             new FactionSetHomeArgument('sethome'),
             new FactionWithdrawArgument('withdraw'),
             new FactionDisbandArgument('disband'),

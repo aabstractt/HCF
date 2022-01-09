@@ -27,11 +27,9 @@ class FactionTopArgument extends Argument {
                 return;
             }
 
-            $fetch = array_map(function (int $index, array $fetch): string {
+            $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_TOP', implode("\n", array_map(function (int $index, array $fetch): string {
                 return Placeholders::replacePlaceholders(($index === 0 ? 'FIRST' : 'OTHER') . '_FACTION_TOP', strval($index + 1), $fetch['name'], (string) $fetch['points']);
-            }, array_keys($result), $result);
-
-            $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_TOP', implode("\n", $fetch)));
+            }, array_keys($result), $result))));
         });
     }
 }

@@ -34,7 +34,7 @@ class SaveSessionAsync extends LoadSessionAsync {
      */
     public function query(MySQL $mysqli): void {
         if ($this->balance === -1) {
-            self::query($mysqli);
+            parent::query($mysqli);
 
             if (!is_array($fetch = $this->getResult())) {
                 throw new PluginException('Player not found');

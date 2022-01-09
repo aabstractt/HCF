@@ -19,6 +19,10 @@ factions:
   claim_distance: 50
   amount_per_block: 5.0
 
+  invalid-names:
+    - 'Road'
+    - 'Spawn'
+
 scoreboard:
   title: "&6&lHCF"
   lines:

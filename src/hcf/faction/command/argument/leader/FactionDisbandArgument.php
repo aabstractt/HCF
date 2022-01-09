@@ -7,6 +7,7 @@ namespace hcf\faction\command\argument\leader;
 use hcf\api\Argument;
 use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
+use hcf\HCF;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;
@@ -42,6 +43,8 @@ class FactionDisbandArgument extends Argument {
 
             return;
         }
+
+        $session->setLastFactionEdit(HCF::dateNow());
 
         FactionFactory::getInstance()->disbandFaction($faction);
 

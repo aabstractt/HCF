@@ -7,6 +7,8 @@ main: hcf\HCF
 permissions:
   faction.admin.forcedisband:
     default: op
+  faction.admin.forcecreate:
+    default: op
   faction.admin.forcejoin:
     default: op
   faction.admin.forceunclaim:

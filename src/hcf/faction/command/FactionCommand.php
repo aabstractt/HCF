@@ -8,6 +8,7 @@ use hcf\api\Command;
 use hcf\faction\command\argument\admin\FactionAddBalanceArgument;
 use hcf\faction\command\argument\admin\FactionDecreaseBalanceArgument;
 use hcf\faction\command\argument\admin\FactionDecreasePointsArgument;
+use hcf\faction\command\argument\admin\FactionForceCreateArgument;
 use hcf\faction\command\argument\admin\FactionForceDisbandArgument;
 use hcf\faction\command\argument\admin\FactionForceJoinArgument;
 use hcf\faction\command\argument\admin\FactionForceUnclaimArgument;
@@ -42,6 +43,7 @@ class FactionCommand extends Command {
         parent::__construct($name, $description, $usageMessage, $aliases);
 
         $this->addArgument(
+            new FactionForceCreateArgument('forcecreate', [], 'faction.admin.forcecreate'),
             new FactionForceDisbandArgument('forcedisband', [], 'faction.admin.forcedisband'),
             new FactionSetDtrArgument('setdtr', [], 'faction.admin.setdtr'),
             new FactionForceJoinArgument('forcejoin', [], 'faction.admin.forcejoin'),

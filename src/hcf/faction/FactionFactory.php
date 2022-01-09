@@ -9,6 +9,8 @@ use hcf\faction\async\LoadFactionsAsync;
 use hcf\faction\type\FactionMember;
 use hcf\faction\type\FactionRank;
 use hcf\faction\type\PlayerFaction;
+use hcf\faction\type\RoadFaction;
+use hcf\faction\type\SafezoneFaction;
 use hcf\HCF;
 use hcf\Placeholders;
 use hcf\session\async\SaveSessionAsync;
@@ -39,7 +41,7 @@ class FactionFactory {
     private array $claims = [];
     /** @var array<string, int> */
     private array $factionNames = [];
-    /** @var array<int, PlayerFaction> */
+    /** @var array<int, Faction> */
     private array $factions = [];
 
     public function init(): void {
@@ -57,24 +59,28 @@ class FactionFactory {
                     $members[$memberData['xuid']] = new FactionMember($memberData['xuid'], $memberData['name'], FactionRank::valueOf($memberData['rankId']));
                 }
 
-                $faction = new PlayerFaction(
-                    $factionData['rowId'],
-                    $factionData['name'],
-                    $members,
-                    $factionData['balance'],
-                    $factionData['points'],
-                    $factionData['deathsUntilRaidable'],
-                    $factionData['regenCooldown'],
-                    $factionData['lastDtrUpdate'],
-                    $factionData['allies'] ?? [],
-                    $factionData['requestedAllies'] ?? [],
-                    $factionData['open'] === 1,
-                    $factionData['friendlyFire'] === 1,
-                    $factionData['lives'],
-                    $factionData['announcement'] === '' ? null : $factionData['announcement']
-                );
+                if (in_array($factionData['name'], HCF::getInstance()->getArray('factions.invalid-names'), true)) {
+                    $faction = self::checkFaction($factionData['rowId'], $factionData['name']);
+                } else {
+                    $faction = new PlayerFaction(
+                        $factionData['rowId'],
+                        $factionData['name'],
+                        $members,
+                        $factionData['balance'],
+                        $factionData['points'],
+                        $factionData['deathsUntilRaidable'],
+                        $factionData['regenCooldown'],
+                        $factionData['lastDtrUpdate'],
+                        $factionData['allies'] ?? [],
+                        $factionData['requestedAllies'] ?? [],
+                        $factionData['open'] === 1,
+                        $factionData['friendlyFire'] === 1,
+                        $factionData['lives'],
+                        $factionData['announcement'] === '' ? null : $factionData['announcement']
+                    );
 
-                $faction->findLeader();
+                    $faction->findLeader();
+                }
 
                 if (isset($factionData['homeString'])) {
                     $faction->setHomePosition(Placeholders::stringToLocation($factionData['homeString']));
@@ -94,12 +100,12 @@ class FactionFactory {
 
     /**
      * @param Session          $session
-     * @param PlayerFaction    $faction
+     * @param Faction    $faction
      * @param FactionRank|null $factionRank
      *
      * @return void
      */
-    public function joinFaction(Session $session, PlayerFaction $faction, FactionRank $factionRank = null): void {
+    public function joinFaction(Session $session, Faction $faction, FactionRank $factionRank = null): void {
         if ($factionRank === null) {
             $factionRank = FactionRank::MEMBER();
         }
@@ -112,13 +118,15 @@ class FactionFactory {
         $faction->addMember(FactionMember::valueOf($session->getXuid(), $session->getName(), $factionRank->ordinal()));
         $faction->broadcastMessage(Placeholders::replacePlaceholders('PLAYER_JOINED_FACTION', $session->getName()));
 
-        if ($factionRank === FactionRank::MEMBER()) {
+        if ($factionRank === FactionRank::MEMBER() && $faction instanceof PlayerFaction) {
             # dtr-freeze = minutes
             $faction->setRemainingRegenerationTime(FactionFactory::getDtrFreeze() * 60);
         }
 
         if (!isset($this->factions[$faction->getRowId()])) {
-            $faction->findLeader();
+            if ($faction instanceof PlayerFaction) {
+                $faction->findLeader();
+            }
 
             $this->factions[$faction->getRowId()] = $faction;
 
@@ -158,7 +166,7 @@ class FactionFactory {
      * @return PlayerFaction|null
      */
     public function getPlayerFaction(Player $player): ?PlayerFaction {
-        $filter = array_filter($this->factions, fn(PlayerFaction $faction) => $faction->isMember($player->getXuid()));
+        $filter = array_filter($this->factions, fn(Faction $faction) => $faction instanceof PlayerFaction && $faction->isMember($player->getXuid()));
 
         return $filter[array_key_first($filter)] ?? null;
     }
@@ -169,6 +177,20 @@ class FactionFactory {
      * @return PlayerFaction|null
      */
     public function getFactionName(string $name): ?PlayerFaction {
+        /** @var $faction PlayerFaction|null */
+        if (!($faction = $this->getServerFaction($name)) instanceof PlayerFaction) {
+            return null;
+        }
+
+        return $faction;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Faction|null
+     */
+    public function getServerFaction(string $name): ?Faction {
         return $this->factions[$this->factionNames[$name] ?? -1] ?? null;
     }
 
@@ -266,5 +288,15 @@ class FactionFactory {
      */
     final public static function getDtrIncrementBetweenUpdate(): float {
         return HCF::getInstance()->getFloat('factions.dtr-increment');
+    }
+
+    /**
+     * @param int    $rowId
+     * @param string $name
+     *
+     * @return Faction
+     */
+    final public static function checkFaction(int $rowId, string $name): Faction {
+        return str_contains($name, 'Road') ? new RoadFaction($rowId, $name) : new SafezoneFaction($rowId, $name);
     }
 }

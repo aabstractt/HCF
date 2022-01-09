@@ -11,6 +11,15 @@ use pocketmine\world\Position;
 use pocketmine\world\World;
 
 class ClaimZone {
+
+    /** @var string */
+    public const SPAWN = 'Spawn';
+    public const NETHER_SPAWN = 'Nether Spawn';
+    public const ROAD = 'Road';
+    public const KOTH = 'Koth';
+    public const WARZONE = 'Warzone';
+    public const WILDERNESS = 'Wilderness';
+
     /** @var bool */
     public bool $created = false;
 
@@ -23,8 +32,7 @@ class ClaimZone {
         private int $factionRowId,
         private Location $firsCorner,
         private Location $secondCorner
-    ) {
-    }
+    ) {}
 
     /**
      * @return int

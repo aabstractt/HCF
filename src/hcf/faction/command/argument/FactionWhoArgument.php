@@ -48,6 +48,7 @@ class FactionWhoArgument extends Argument {
             $faction->getName(),
             (string) count($faction->getMembers()),
             (string) FactionFactory::getMaxMembers(),
+            ($pos = $faction->getHomePosition()) !== null ? Placeholders::replacePlaceholders('FACTION_WHO_HOME', (string) $pos->getFloorX(), (string) $pos->getFloorZ()) : Placeholders::replacePlaceholders('FACTION_WHO_HOME_NOT_SET'),
             implode(', ', $m[FactionRank::LEADER()->ordinal()] ?? []),
             implode(', ', $m[FactionRank::COLEADER()->ordinal()] ?? []),
             implode(', ', $m[FactionRank::CAPTAIN()->ordinal()] ?? []),

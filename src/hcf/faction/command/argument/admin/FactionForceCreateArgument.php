@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace hcf\faction\command\argument;
+namespace hcf\faction\command\argument\admin;
 
 use hcf\api\Argument;
 use hcf\faction\async\SaveFactionAsync;
 use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
-use hcf\faction\type\PlayerFaction;
 use hcf\HCF;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
@@ -17,7 +16,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-class FactionCreateArgument extends Argument {
+class FactionForceCreateArgument extends Argument {
 
     /**
      * @param CommandSender $sender
@@ -33,7 +32,7 @@ class FactionCreateArgument extends Argument {
         }
 
         if (count($args) < 1) {
-            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' create <factionName>');
+            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' forcecreate <spawn|road|koth>');
 
             return;
         }
@@ -46,38 +45,20 @@ class FactionCreateArgument extends Argument {
             return;
         }
 
-        if ($session->getLastFactionEdit() !== null && (time() - 60) < strtotime($session->getLastFactionEdit())) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_ACTION_COOLDOWN'));
-
-            return;
-        }
-
-        if (strlen($args[0]) < FactionFactory::getFactionNameMin()) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_NAME_TOO_SHORT', (string) FactionFactory::getFactionNameMin()));
-
-            return;
-        }
-
-        if (strlen($args[0]) > FactionFactory::getFactionNameMax()) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_NAME_TOO_LONG', (string) FactionFactory::getFactionNameMax()));
-
-            return;
-        }
-
-        if (FactionFactory::getInstance()->getFactionName($args[0]) !== null || in_array(strtolower($args[0]), HCF::getInstance()->getArray('factions.invalid-names'), true)) {
+        if (FactionFactory::getInstance()->getServerFaction($args[0]) !== null) {
             $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_ALREADY_EXISTS', $args[0]));
 
             return;
         }
 
-        TaskUtils::runAsync(new SaveFactionAsync(serialize([$args[0], 1.1])), function (SaveFactionAsync $query) use ($args, $session, $sender): void {
+        TaskUtils::runAsync(new SaveFactionAsync(serialize([$args[0], 0.1])), function (SaveFactionAsync $query) use ($args, $session, $sender): void {
             if (!is_int($rowId = $query->getResult())) {
                 $sender->sendMessage(TextFormat::RED . 'An error was occurred...');
 
                 return;
             }
 
-            FactionFactory::getInstance()->joinFaction($session, new PlayerFaction($rowId, $args[0]), FactionRank::LEADER());
+            FactionFactory::getInstance()->joinFaction($session, FactionFactory::checkFaction($rowId, $args[0]), FactionRank::LEADER());
 
             $session->setLastFactionEdit(HCF::dateNow());
         });

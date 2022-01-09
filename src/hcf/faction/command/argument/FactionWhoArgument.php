@@ -53,8 +53,6 @@ class FactionWhoArgument extends Argument {
             $m[$member->getFactionRank()->ordinal()][] = ($member->isOnline() ? TextFormat::GREEN : TextFormat::GRAY) . $member->getName() . sprintf('&e[&a%s&e]', '0');
         }
 
-        $faction->updateDeathsUntilRaidable();
-
         $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_WHO_PLAYER',
             $faction->getName(),
             (string) count($faction->getMembers()),

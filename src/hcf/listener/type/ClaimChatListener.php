@@ -66,6 +66,7 @@ class ClaimChatListener implements Listener {
                 Placeholders::locationToString($claimZone->getSecondCorner())
             ), function (AddClaimAsync $query) use ($player, $claimZone, $faction, $distance): void {
                 $faction->decreaseBalance((int) $distance);
+                $faction->save();
 
                 $faction->setClaimZone($claimZone);
 

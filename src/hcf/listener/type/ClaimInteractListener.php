@@ -41,11 +41,15 @@ class ClaimInteractListener implements Listener {
             return;
         }
 
-        if ($ev->getAction() === $ev::RIGHT_CLICK_BLOCK) {
-            $claimZone->setFirsCorner(Location::fromObject($block->getPosition(), null));
+        $loc = Location::fromObject($block->getPosition(), null);
+
+        if ($first = $ev->getAction() === $ev::RIGHT_CLICK_BLOCK) {
+            $claimZone->setFirsCorner($loc);
         } else {
-            $claimZone->setSecondCorner(Location::fromObject($block->getPosition(), null));
+            $claimZone->setSecondCorner($loc);
         }
+
+        $player->sendMessage(Placeholders::replacePlaceholders('CLAIMING_' . ($first ? 'FIRST' : 'SECOND') . '_POSITION', (string) $loc->x, (string) $loc->z));
 
         if ($claimZone->getFirsCorner()->getFloorY() === 0 || $claimZone->getSecondCorner()->getFloorY() === 0) {
             return;

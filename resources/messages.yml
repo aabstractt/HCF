@@ -7,6 +7,7 @@ FACTION_INVITE_RECEIVED: '&4{%0} has invited you to join {%1}.'
 FACTION_NOT_ENOUGH_BALANCE: "The faction doesn't have enough money to do this."
 FACTION_PLAYER_PROMOTED: '&7{%0}&2{%1}&e has been assigned as a faction &f{%2}&e.'
 FACTION_DTR_UPDATED: "Faction dtr was set to {%1}"
+FACTION_CLAIM_COMPLETED: "Claim was successfully completed"
 
 COMMAND_FACTION_ATTEMPT_CREATE: '&4You must leave you current faction before you create one.'
 COMMAND_FACTION_ACTION_COOLDOWN: '&4You must wait 1 minute between creating and disbanding a faction.'
@@ -36,6 +37,13 @@ INVALID_NUMBER: '&c{%0} is a invalid value'
 AMOUNT_MUST_BE_POSITIVE: "&cAmount must be positive."
 NOT_ENOUGH_BALANCE: "&cYou need at least &l${%0}&r&c to do this, you only have &l${%1}"
 FACTION_MEMBER_DEPOSITED: "{%0}&e has deposited &e${%1}&e into the faction balance."
+
+CLAIMING_FIRST_POSITION: 'First position was set to X: {%0} Z: {%1}'
+CLAIMING_SECOND_POSITION: 'Second position was set to X: {%0} Z: {%1}'
+CLAIM_INVALID_SIZE: 'Claim size is invalid'
+CLAIMING_COST: 'Cost claim is {%0}'
+CANNOT_CLAIM_HERE: 'You cannot claim here'
+CLAIMING_NOT_SELECTED: 'You not selected any position'
 
 FACTION_WHO_PLAYER:
   - '&7&m--------------------------------------'

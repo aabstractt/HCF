@@ -53,7 +53,7 @@ class FactionWhoArgument extends Argument {
             implode(', ', $m[FactionRank::CAPTAIN()->ordinal()] ?? []),
             implode(', ', $m[FactionRank::MEMBER()->ordinal()] ?? []),
             (string) $faction->getBalance(),
-            $faction->getDtrSymbol() . $faction->getDeathsUntilRaidable(),
+            (string) $faction->getDeathsUntilRaidable(),
             ($remain = $faction->getRemainingRegenerationTime()) <= 0 ? 'Empty' : Placeholders::replacePlaceholders('FACTION_WHO_UNTIL_REGEN', Placeholders::timeString($remain)),
             (string) $faction->getPoints(),
             (string) $faction->getLives(),

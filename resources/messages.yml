@@ -12,6 +12,11 @@ FACTION_CLAIM_COMPLETED: "Claim was successfully completed"
 FACTION_CLAIM_NOT_FOUND: "Claim for faction {%0} not found"
 FACTION_CLAIM_SUCCESSFULLY_REMOVED: "Claim for faction {%0} was successfully removed."
 
+MUST_ENABLE_SOTW: "&cYou have to enable the sotw event to do this."
+MUST_DISABLE_SOTW: "&cYou have to disable the sotw event to do this."
+SOTW_SUCCESSFULLY_DISABLED: "&aYou have successfully disabled the sotw event."
+SOTW_SUCCESSFULLY_ENABLED: "&aYou have successfully enabled the sotw event."
+
 COMMAND_FACTION_ATTEMPT_CREATE: '&4You must leave you current faction before you create one.'
 COMMAND_FACTION_ACTION_COOLDOWN: '&4You must wait 1 minute between creating and disbanding a faction.'
 COMMAND_FACTION_RAIDABLE: '&4You cannot do this while your faction is raidable.'

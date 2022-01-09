@@ -5,6 +5,8 @@ api: 4.0.0
 main: hcf\HCF
 
 permissions:
+  command.sotw:
+    default: op
   faction.admin.forcedisband:
     default: op
   faction.admin.forcecreate:

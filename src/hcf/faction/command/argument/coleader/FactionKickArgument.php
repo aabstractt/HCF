@@ -31,7 +31,7 @@ class FactionKickArgument extends Argument {
         $session = SessionFactory::getInstance()->getPlayerSession($sender);
 
         if (($faction = $session->getFaction()) === null) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_PLAYER_NOT_IN_FACTION'));
+            $sender->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_NOT_IN'));
 
             return;
         }

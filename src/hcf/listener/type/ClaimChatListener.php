@@ -28,6 +28,8 @@ class ClaimChatListener implements Listener {
         }
 
         if (strtolower($ev->getMessage()) === 'accept') {
+            $ev->cancel();
+
             if ($claimZone->getFirsCorner()->y <= 0 || $claimZone->getSecondCorner()->y <= 0) {
                 $player->sendMessage(Placeholders::replacePlaceholders('CLAIMING_NOT_SELECTED'));
 

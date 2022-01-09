@@ -8,7 +8,6 @@ use hcf\api\Argument;
 use hcf\faction\FactionFactory;
 use hcf\Placeholders;
 use pocketmine\command\CommandSender;
-use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class FactionAddBalanceArgument extends Argument {
@@ -21,7 +20,7 @@ class FactionAddBalanceArgument extends Argument {
      */
     public function run(CommandSender $sender, string $commandLabel, string $argumentLabel, array $args): void {
         if (count($args) < 2) {
-            $sender->sendMessage(TextFormat::RED . 'Usage: /' . $commandLabel . ' addbalance <faction> <value>');
+            $sender->sendMessage(TextFormat::RED . sprintf('Usage: /%s %s <faction> <value>', $commandLabel, $argumentLabel));
 
             return;
         }
@@ -32,13 +31,14 @@ class FactionAddBalanceArgument extends Argument {
             return;
         }
 
-        if (!is_int($value = $args[1])) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('INVALID_NUMBER'));
+        if (!is_numeric($value = $args[1])) {
+            $sender->sendMessage(Placeholders::replacePlaceholders('INVALID_NUMBER', $value));
 
             return;
         }
 
-        $faction->increaseBalance($value);
+        $faction->increaseBalance((int) $value);
+        $faction->save();
 
         $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_BALANCE_INCREASED', $faction->getName(), (string) $value));
     }

@@ -55,7 +55,7 @@ class FactionLeaveArgument extends Argument {
         $faction->removeMember($sender->getXuid());
         $faction->save();
 
-        $session->setFaction(null);
+        $session->setFaction();
         $session->setFactionRank(FactionRank::MEMBER());
         $session->save();
     }

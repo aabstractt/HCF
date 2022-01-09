@@ -8,7 +8,6 @@ use hcf\api\Argument;
 use hcf\faction\FactionFactory;
 use hcf\Placeholders;
 use pocketmine\command\CommandSender;
-use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class FactionSetDtrArgument extends Argument {
@@ -39,6 +38,7 @@ class FactionSetDtrArgument extends Argument {
         }
 
         $faction->setDeathsUntilRaidable((int) $value);
+        $faction->save();
 
         $sender->sendMessage(Placeholders::replacePlaceholders('FACTION_DTR_UPDATED', $faction->getName(), (string) $value));
     }

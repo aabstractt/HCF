@@ -8,7 +8,6 @@ use hcf\api\Argument;
 use hcf\faction\FactionFactory;
 use hcf\Placeholders;
 use pocketmine\command\CommandSender;
-use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class FactionForceDisbandArgument extends Argument {

@@ -27,7 +27,7 @@ class ClaimInteractListener implements Listener {
 
         $item = $ev->getItem();
 
-        if ($item->getNamedTag()->getTag('Claiming') === null) {
+        if (($tag = $item->getNamedTag()->getTag('custom_item')) === null || $tag->getValue() !== 'claiming') {
             return;
         }
 

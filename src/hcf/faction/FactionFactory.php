@@ -109,9 +109,8 @@ class FactionFactory {
 
         $session->save();
 
-        $faction->broadcastMessage(Placeholders::replacePlaceholders('PLAYER_JOINED_FACTION', $session->getName()));
-
         $faction->addMember(FactionMember::valueOf($session->getXuid(), $session->getName(), $factionRank->ordinal()));
+        $faction->broadcastMessage(Placeholders::replacePlaceholders('PLAYER_JOINED_FACTION', $session->getName()));
 
         if ($factionRank === FactionRank::MEMBER()) {
             # dtr-freeze = minutes

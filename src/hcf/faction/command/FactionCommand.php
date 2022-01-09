@@ -11,6 +11,7 @@ use hcf\faction\command\argument\admin\FactionForceDisbandArgument;
 use hcf\faction\command\argument\admin\FactionSetDtrArgument;
 use hcf\faction\command\argument\admin\FactionAddPointsArgument;
 use hcf\faction\command\argument\captain\FactionInviteArgument;
+use hcf\faction\command\argument\coleader\FactionClaimArgument;
 use hcf\faction\command\argument\coleader\FactionDemoteArgument;
 use hcf\faction\command\argument\coleader\FactionKickArgument;
 use hcf\faction\command\argument\coleader\FactionPromoteArgument;
@@ -46,8 +47,9 @@ class FactionCommand extends Command {
             new FactionCreateArgument('create'),
             new FactionInviteArgument('invite'),
             new FactionKickArgument('kick'),
-            new FactionPromoteArgument('promote'),
+            new FactionClaimArgument('claim'),
             new FactionDemoteArgument('demote'),
+            new FactionPromoteArgument('promote'),
             new FactionSetHomeArgument('sethome'),
             new FactionWithdrawArgument('withdraw'),
             new FactionDisbandArgument('disband'),

@@ -80,12 +80,14 @@ class FactionFactory {
                     $faction->setHomePosition(Placeholders::stringToLocation($factionData['homeString']));
                 }
 
-                $this->factionNames[$faction->getName()] = $faction->getRowId();
-                $this->factions[$faction->getRowId()] = $faction;
-
                 foreach ($factionData['claims'] ?? [] as $claimData) {
                     $this->claims[$claimData['rowId']] = ClaimZone::deserialize($claimData);
+
+                    $faction->setClaimZone(ClaimZone::deserialize($claimData));
                 }
+
+                $this->factionNames[$faction->getName()] = $faction->getRowId();
+                $this->factions[$faction->getRowId()] = $faction;
             }
         });
     }

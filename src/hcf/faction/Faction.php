@@ -15,6 +15,8 @@ class Faction extends Serializable {
 
     /** @var Location|null */
     private ?Location $homePosition = null;
+    /** @var ClaimZone|null */
+    protected ?ClaimZone $claimZone;
     /** @var array */
     private array $invited = [];
 
@@ -203,6 +205,20 @@ class Faction extends Serializable {
      */
     public function getHomePosition(): ?Location {
         return $this->homePosition;
+    }
+
+    /**
+     * @param ClaimZone|null $claimZone
+     */
+    public function setClaimZone(?ClaimZone $claimZone): void {
+        $this->claimZone = $claimZone;
+    }
+
+    /**
+     * @return ClaimZone|null
+     */
+    public function getClaimZone(): ?ClaimZone {
+        return $this->claimZone;
     }
 
     public function save(): void {

@@ -11,7 +11,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-class ForceAddBalanceArgument extends Argument {
+class FactionAddBalanceArgument extends Argument {
 
     /**
      * @param CommandSender $sender

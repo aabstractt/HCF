@@ -15,6 +15,7 @@ use hcf\session\SessionFactory;
 use hcf\TaskUtils;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 class FactionCreateArgument extends Argument {
@@ -78,6 +79,8 @@ class FactionCreateArgument extends Argument {
             }
 
             FactionFactory::getInstance()->joinFaction($session, new PlayerFaction($rowId, $args[0]), FactionRank::LEADER());
+
+            Server::getInstance()->broadcastMessage(Placeholders::replacePlaceholders('PLAYER_FACTION_CREATED', $sender->getName(), $args[0]));
 
             $session->setLastFactionEdit(HCF::dateNow());
         });

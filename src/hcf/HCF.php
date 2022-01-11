@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace hcf;
 
-use hcf\event\EventHeartbeat;
+use hcf\command\defaults\FeedCommand;
+use hcf\command\defaults\FlyCommand;
+use hcf\command\defaults\NightVisionCommand;
+use hcf\command\defaults\TeamLocationCommand;
 use hcf\event\sotw\command\SotwCommand;
 use hcf\faction\command\FactionCommand;
 use hcf\faction\FactionFactory;
@@ -46,7 +49,11 @@ class HCF extends PluginBase {
         $this->registerCommand(
             new FactionCommand("faction", "Faction commands", null, ["f"]),
             new KothCommand('koth', 'Koth Management'),
-            new SotwCommand()
+            new SotwCommand(),
+            new TeamLocationCommand('tl'),
+            new NightVisionCommand('nv'),
+            new FlyCommand('fly'),
+            new FeedCommand('feed')
         );
 
         $this->registerListener(

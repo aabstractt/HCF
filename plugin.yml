@@ -32,3 +32,10 @@ permissions:
     default: op
   koth.command.time:
     default: op
+
+  hcf.command.nightvision:
+    default: op
+  hcf.command.fly:
+    default: op
+  hcf.command.feed:
+    default: op

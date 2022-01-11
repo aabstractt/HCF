@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace hcf\faction\command\argument\coleader;
 
-use hcf\api\Argument;
+use hcf\command\Argument;
 use hcf\faction\type\FactionRank;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace hcf\koth\command\argument;
 
-use hcf\api\Argument;
+use hcf\command\Argument;
 use hcf\faction\ClaimZone;
 use hcf\koth\KothFactory;
 use hcf\Placeholders;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace hcf\faction\command\argument\admin;
 
-use hcf\api\Argument;
+use hcf\command\Argument;
 use hcf\faction\FactionFactory;
 use hcf\Placeholders;
 use pocketmine\command\CommandSender;

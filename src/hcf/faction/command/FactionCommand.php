@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace hcf\faction\command;
 
-use hcf\api\Command;
+use hcf\command\Command;
 use hcf\faction\command\argument\admin\FactionAddBalanceArgument;
 use hcf\faction\command\argument\admin\FactionDecreaseBalanceArgument;
 use hcf\faction\command\argument\admin\FactionDecreasePointsArgument;

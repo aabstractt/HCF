@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace hcf\koth\command;
 
-use hcf\api\Command;
+use hcf\command\Command;
 use hcf\koth\command\argument\KothCreateArgument;
 use hcf\koth\command\argument\KothListArgument;
 use hcf\koth\command\argument\KothStartArgument;

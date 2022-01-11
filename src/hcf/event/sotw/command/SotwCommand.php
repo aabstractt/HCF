@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace hcf\event\sotw\command;
 
-use hcf\api\Command;
+use hcf\command\Command;
 use hcf\event\sotw\command\argument\HelpArgument;
 use hcf\event\sotw\command\argument\StartArgument;
 use hcf\event\sotw\command\argument\StopArgument;

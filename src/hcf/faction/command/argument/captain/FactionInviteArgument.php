@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace hcf\faction\command\argument\captain;
 
-use hcf\api\Argument;
+use hcf\command\Argument;
 use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
 use hcf\HCF;

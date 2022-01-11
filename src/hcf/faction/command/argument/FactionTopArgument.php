@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace hcf\faction\command\argument;
 
-use hcf\api\Argument;
+use hcf\command\Argument;
 use hcf\faction\async\LoadTopFactionsAsync;
 use hcf\Placeholders;
 use hcf\task\QueryAsyncTask;

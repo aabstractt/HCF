@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace hcf\event\sotw\command\argument;
 
-use hcf\api\Argument;
+use hcf\command\Argument;
 use hcf\event\Event;
 use hcf\event\EventManager;
 use hcf\Placeholders;

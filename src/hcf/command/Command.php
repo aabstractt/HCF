@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace hcf\api;
+namespace hcf\command;
 
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;

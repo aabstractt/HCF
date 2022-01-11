@@ -19,6 +19,7 @@ use hcf\listener\PlayerMoveListener;
 use hcf\listener\PlayerQuitListener;
 use hcf\listener\type\ClaimChatListener;
 use hcf\listener\type\ClaimInteractListener;
+use hcf\task\ScoreboardUpdateTask;
 use pocketmine\command\Command;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
@@ -61,7 +62,7 @@ class HCF extends PluginBase {
             new ClaimChatListener()
         );
 
-        $this->getScheduler()->scheduleRepeatingTask(new EventHeartbeat(), 20); // 1 tick
+        $this->getScheduler()->scheduleRepeatingTask(new ScoreboardUpdateTask(), 20); // 1 tick
     }
 
     /**

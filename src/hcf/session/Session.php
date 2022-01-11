@@ -9,6 +9,7 @@ use hcf\faction\Faction;
 use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
 use hcf\session\async\SaveSessionAsync;
+use hcf\session\scoreboard\ScoreboardBuilder;
 use hcf\TaskUtils;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
@@ -22,6 +23,8 @@ class Session {
     private int $homeTeleport = -1;
     /** @var ClaimZone|null */
     private ?ClaimZone $claimZone = null;
+    /** @var ScoreboardBuilder */
+    private ScoreboardBuilder $scoreboardBuilder;
 
     /**
      * @param string      $xuid
@@ -38,7 +41,9 @@ class Session {
         private int $balance = 0,
         private int $factionRowId = -1,
         private ?string $lastFactionEdit = null
-    ) {}
+    ) {
+        $this->scoreboardBuilder = new ScoreboardBuilder($this, ScoreboardBuilder::SIDEBAR);
+    }
 
     /**
      * @return string
@@ -52,6 +57,13 @@ class Session {
      */
     public function getName(): string {
         return $this->name;
+    }
+
+    /**
+     * @return ScoreboardBuilder
+     */
+    public function getScoreboardBuilder(): ScoreboardBuilder {
+        return $this->scoreboardBuilder;
     }
 
     /**

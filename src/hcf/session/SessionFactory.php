@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace hcf\session;
 
-use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
 use hcf\session\async\LoadSessionAsync;
 use hcf\task\QueryAsyncTask;
@@ -35,6 +34,8 @@ class SessionFactory {
             }
 
             $this->sessions[strtolower($session->getName())] = $session;
+
+            $session->getScoreboardBuilder()->addPlayer();
         });
     }
 
@@ -42,9 +43,13 @@ class SessionFactory {
      * @param Player $player
      */
     public function closePlayerSession(Player $player): void {
-        if (isset($this->sessions[strtolower($player->getName())])) {
-            unset($this->sessions[strtolower($player->getName())]);
+        if (($session = $this->sessions[strtolower($player->getName())] ?? null) === null) {
+            return;
         }
+
+        $session->getScoreboardBuilder()->removePlayer();
+
+        unset($this->sessions[strtolower($player->getName())]);
     }
 
     /**

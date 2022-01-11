@@ -167,10 +167,12 @@ class KothFactory {
             return;
         }
 
-        if ($this->kothName < 1) {
+        if ($this->capturingTime < 1) {
             Server::getInstance()->broadcastMessage(Placeholders::replacePlaceholders('KOTH_CAPTURING_END', $target->getName(), $session->getFactionNonNull()->getName(), $kothName));
 
             $this->findKoth($kothName);
+
+            $this->target = null;
 
             return;
         }

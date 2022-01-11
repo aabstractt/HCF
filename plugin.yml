@@ -25,3 +25,10 @@ permissions:
     default: op
   faction.admin.addpoints:
     default: op
+
+  koth.command.create:
+    default: op
+  koth.command.start:
+    default: op
+  koth.command.time:
+    default: op

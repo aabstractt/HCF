@@ -44,6 +44,13 @@ class ClaimZone {
     }
 
     /**
+     * @return World
+     */
+    public function getWorld(): World {
+        return $this->firsCorner->getWorld();
+    }
+
+    /**
      * @param Location $firsCorner
      */
     public function setFirsCorner(Location $firsCorner): void {
@@ -72,21 +79,31 @@ class ClaimZone {
     }
 
     /**
+     * @param bool $y
+     *
+     * @return AxisAlignedBB
+     */
+    public function asAxisAligned(bool $y = true): AxisAlignedBB {
+        $firstCorner = $this->firsCorner;
+        $secondCorner = $this->secondCorner;
+
+        return new AxisAlignedBB(
+            min($firstCorner->getFloorX(), $secondCorner->getFloorX()),
+            $y ? min($firstCorner->getFloorY(), $secondCorner->getFloorY()) : 0,
+            min($firstCorner->getFloorZ(), $secondCorner->getFloorZ()),
+            max($firstCorner->getFloorX(), $secondCorner->getFloorX()),
+            $y ? max($firstCorner->getFloorY(), $secondCorner->getFloorY()) : World::Y_MAX,
+            max($firstCorner->getFloorZ(), $secondCorner->getFloorZ())
+        );
+    }
+
+    /**
      * @param Position $pos
      *
      * @return bool
      */
     public function isInside(Position $pos): bool {
-        $firstCorner = $this->firsCorner;
-        $secondCorner = $this->secondCorner;
-
-        $minX = min($firstCorner->getFloorX(), $secondCorner->getFloorX());
-        $maxX = max($firstCorner->getFloorX(), $secondCorner->getFloorX());
-
-        $minZ = min($firstCorner->getFloorZ(), $secondCorner->getFloorZ());
-        $maxZ = max($firstCorner->getFloorZ(), $secondCorner->getFloorZ());
-
-        return (new AxisAlignedBB($minX, 0, $minZ, $maxX, World::Y_MAX, $maxZ))->isVectorInside($pos) && $pos->getWorld()->getFolderName() === $firstCorner->getWorld()->getFolderName();
+        return $this->asAxisAligned(false)->isVectorInside($pos) && $pos->getWorld()->getFolderName() === $this->getWorld()->getFolderName();
     }
 
     /**

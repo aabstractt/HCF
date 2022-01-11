@@ -7,6 +7,7 @@ namespace hcf\koth\command;
 use hcf\api\Command;
 use hcf\koth\command\argument\KothCreateArgument;
 use hcf\koth\command\argument\KothListArgument;
+use hcf\koth\command\argument\KothStartArgument;
 use hcf\koth\command\argument\KothTimeArgument;
 use pocketmine\lang\Translatable;
 
@@ -24,6 +25,7 @@ class KothCommand extends Command {
         $this->addArgument(
             new KothCreateArgument('create', [], 'koth.command.create'),
             new KothTimeArgument('time', [], 'koth.command.time'),
+            new KothStartArgument('start', [], 'koth.command.start'),
             new KothListArgument('list')
         );
     }

@@ -45,6 +45,15 @@ PLAYER_FACTION_LEFT: '&eYou have left your faction.'
 KOTH_ALREADY_EXISTS: "Koth {%0} already registered."
 ALREADY_REGISTERING_KOTH: "You already registering a claim zone"
 PLAYER_START_CLAIMING_KOTH: "Started claiming a koth zone"
+KOTH_SUCCESSFULLY_STARTED: 'The koth {%0} was successfully started'
+KOTH_STARTED: 'The koth {%0} was started!'
+KOTH_TIME_UPDATED: 'The koth {%0} time was updated to {%1}'
+
+PLAYER_KOTH_CONTROLLING: 'You are controlling the koth {%0}'
+KOTH_SOMEONE_CONTROLLING: 'Someone is controlling the koth {%0}'
+PLAYER_KOTH_CONTROLLING_LOST: 'You lost the koth control {%0}'
+KOTH_CONTROLLING_LOST: '{%0} lost the koth control {%1}'
+KOTH_CAPTURING_END: '{%0} has captured the koth {%2} with faction {%1}'
 
 YOU_CANNOT_LEAVE_FACTION_LEAD: '&4You cannot leave a faction you lead.'
 MUST_LEAVE_FACTION_TERRITORY: "&4You must leave your faction's territory before leaving."

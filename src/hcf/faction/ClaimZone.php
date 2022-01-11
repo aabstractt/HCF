@@ -22,6 +22,8 @@ class ClaimZone {
 
     /** @var bool */
     public bool $created = false;
+    /** @var string */
+    public string $specify = '';
 
     /**
      * @param int      $factionRowId
@@ -93,6 +95,6 @@ class ClaimZone {
      * @return ClaimZone
      */
     public static function deserialize(array $serialized): ClaimZone {
-        return new ClaimZone($serialized[2], Placeholders::stringToLocation($serialized[0]), Placeholders::stringToLocation($serialized[1]));
+        return new ClaimZone($serialized[2] ?? -1, Placeholders::stringToLocation($serialized[0]), Placeholders::stringToLocation($serialized[1]));
     }
 }

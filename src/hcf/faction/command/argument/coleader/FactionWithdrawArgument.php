@@ -60,7 +60,7 @@ class FactionWithdrawArgument extends Argument {
         }
 
         if ($amount <= 0) {
-            $sender->sendMessage(Placeholders::replacePlaceholders('INVALID_NUMBER'));
+            $sender->sendMessage(Placeholders::replacePlaceholders('INVALID_NUMBER', (string) $amount));
 
             return;
         }

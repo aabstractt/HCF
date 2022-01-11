@@ -9,6 +9,7 @@ use pocketmine\plugin\PluginException;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
+use pocketmine\world\World;
 
 class Placeholders {
 
@@ -79,15 +80,15 @@ class Placeholders {
     }
 
     /**
-     * @param Location|null $loc
+     * @param World|null $world
      *
-     * @return string
+     * @return Location
      */
-    public static function homeToString(?Location $loc): string {
-        if ($loc === null) {
-            return 'Not Set';
+    public static function location(?World $world): Location {
+        if ($world === null) {
+            throw new PluginException('Invalid world');
         }
 
-        return 'X: '. $loc->getFloorX() . ' Z: ' . $loc->getFloorZ();
+        return new Location(0, 0, 0, $world, 0, 0);
     }
 }

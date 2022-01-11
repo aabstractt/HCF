@@ -6,6 +6,7 @@ namespace hcf\listener\type;
 
 use hcf\faction\async\AddClaimAsync;
 use hcf\faction\FactionFactory;
+use hcf\koth\KothFactory;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use hcf\TaskUtils;
@@ -36,7 +37,7 @@ class ClaimChatListener implements Listener {
                 return;
             }
 
-            if (($faction = $session->getFaction()) === null) {
+            if (($faction = $session->getFaction()) === null && $claimZone->getFactionRowId() !== -1) {
                 $player->sendMessage(Placeholders::replacePlaceholders('COMMAND_FACTION_NOT_IN'));
 
                 $session->setClaimZone(null);
@@ -44,13 +45,13 @@ class ClaimChatListener implements Listener {
                 return;
             }
 
-            if (($distance = $claimZone->getFirsCorner()->distance($claimZone->getSecondCorner())) < 5) {
+            if (($distance = $claimZone->getFirsCorner()->distance($claimZone->getSecondCorner())) < 5 && $claimZone->getFactionRowId() !== -1) {
                 $player->sendMessage(Placeholders::replacePlaceholders('CLAIM_INVALID_SIZE'));
 
                 return;
             }
 
-            if ($distance > $faction->getBalance()) {
+            if ($faction !== null && $distance > $faction->getBalance()) {
                 $player->sendMessage(Placeholders::replacePlaceholders('FACTION_NOT_ENOUGH_BALANCE'));
 
                 return;
@@ -60,11 +61,17 @@ class ClaimChatListener implements Listener {
 
             $player->getInventory()->remove(VanillaItems::GOLDEN_HOE());
 
+            if ($faction === null) {
+                KothFactory::getInstance()->addKoth($claimZone->specify, $claimZone);
+
+                return;
+            }
+
             TaskUtils::runAsync(new AddClaimAsync(
                 $faction->getRowId(),
                 Placeholders::locationToString($claimZone->getFirsCorner()),
                 Placeholders::locationToString($claimZone->getSecondCorner())
-            ), function (AddClaimAsync $query) use ($player, $claimZone, $faction, $distance): void {
+            ), function () use ($player, $claimZone, $faction, $distance): void {
                 $faction->decreaseBalance((int) $distance);
                 $faction->save();
 

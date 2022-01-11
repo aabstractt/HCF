@@ -8,6 +8,7 @@ use hcf\event\EventHeartbeat;
 use hcf\event\sotw\command\SotwCommand;
 use hcf\faction\command\FactionCommand;
 use hcf\faction\FactionFactory;
+use hcf\koth\command\KothCommand;
 use hcf\listener\EntityDamageListener;
 use hcf\listener\PlayerDeathListener;
 use hcf\listener\PlayerJoinListener;
@@ -18,7 +19,10 @@ use hcf\listener\type\ClaimInteractListener;
 use pocketmine\command\Command;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
+use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
+use pocketmine\world\World;
+use pocketmine\world\WorldException;
 
 class HCF extends PluginBase {
 
@@ -36,6 +40,7 @@ class HCF extends PluginBase {
 
         $this->registerCommand(
             new FactionCommand("faction", "Faction commands", null, ["f"]),
+            new KothCommand('koth', 'Koth Management'),
             new SotwCommand()
         );
 
@@ -53,6 +58,9 @@ class HCF extends PluginBase {
         $this->getScheduler()->scheduleRepeatingTask(new EventHeartbeat(), 20); // 1 tick
     }
 
+    /**
+     * @param Command ...$commands
+     */
     private function registerCommand(Command ...$commands): void {
         foreach($commands as $command) {
             $this->getServer()->getCommandMap()->register("hcf", $command);
@@ -61,8 +69,6 @@ class HCF extends PluginBase {
 
     /**
      * @param Listener ...$listeners
-     *
-     * @return void
      */
     protected function registerListener(Listener ...$listeners): void {
         foreach ($listeners as $listener) {
@@ -75,6 +81,13 @@ class HCF extends PluginBase {
      */
     public static function dateNow(): string {
         return '';
+    }
+
+    /**
+     * @return World
+     */
+    public static function getDefaultWorld(): World {
+        return Server::getInstance()->getWorldManager()->getDefaultWorld() ?? throw new WorldException('Default world was received null');
     }
 
     /**

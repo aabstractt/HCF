@@ -144,8 +144,9 @@ class Session {
 
     /**
      * @param ClaimZone|null $claimZone
+     * @param string         $value
      */
-    public function setClaimZone(?ClaimZone $claimZone): void {
+    public function setClaimZone(?ClaimZone $claimZone, string $value = 'faction_claiming'): void {
         $this->claimZone = $claimZone;
 
         $item = VanillaItems::GOLDEN_HOE();
@@ -157,7 +158,7 @@ class Session {
         }
 
         $nbt = $item->getNamedTag();
-        $nbt->setString('custom_item', 'claiming');
+        $nbt->setString('custom_item', $value);
 
         $item->setNamedTag($nbt);
 

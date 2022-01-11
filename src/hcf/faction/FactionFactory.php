@@ -16,6 +16,7 @@ use hcf\Placeholders;
 use hcf\session\async\SaveSessionAsync;
 use hcf\session\Session;
 use hcf\session\SessionFactory;
+use hcf\task\QueryAsyncTask;
 use hcf\TaskUtils;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
@@ -45,7 +46,7 @@ class FactionFactory {
     private array $factions = [];
 
     public function init(): void {
-        TaskUtils::runAsync(new LoadFactionsAsync(), function (LoadFactionsAsync $query): void {
+        TaskUtils::runAsync(new LoadFactionsAsync(), function (QueryAsyncTask $query): void {
             if (!is_array($result = $query->getResult()) || count($result) === 0) {
                 HCF::getInstance()->getLogger()->warning('Factions is empty');
 
@@ -210,7 +211,7 @@ class FactionFactory {
      */
     public function getFactionAt(Position $pos): ?Faction {
         foreach ($this->claims as $claim) {
-            if (!$claim->isInside($pos)) {
+            if (!$claim->isInside($pos, false)) {
                 continue;
             }
 

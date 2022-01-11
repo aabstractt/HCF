@@ -51,6 +51,9 @@ class KothCreateArgument extends Argument {
 
         $sender->sendMessage(Placeholders::replacePlaceholders('PLAYER_START_CLAIMING_KOTH'));
 
-        $session->setClaimZone(new ClaimZone(-1, Placeholders::location(HCF::getDefaultWorld()), Placeholders::location(HCF::getDefaultWorld())), 'koth_claiming');
+        $claimZone = new ClaimZone(-1, Placeholders::location(HCF::getDefaultWorld()), Placeholders::location(HCF::getDefaultWorld()));
+        $claimZone->specify = $args[0];
+
+        $session->setClaimZone($claimZone, 'koth_claiming');
     }
 }

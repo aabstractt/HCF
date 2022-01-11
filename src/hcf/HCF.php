@@ -9,6 +9,9 @@ use hcf\event\sotw\command\SotwCommand;
 use hcf\faction\command\FactionCommand;
 use hcf\faction\FactionFactory;
 use hcf\koth\command\KothCommand;
+use hcf\koth\KothFactory;
+use hcf\listener\BlockBreakListener;
+use hcf\listener\BlockPlaceListener;
 use hcf\listener\EntityDamageListener;
 use hcf\listener\PlayerDeathListener;
 use hcf\listener\PlayerJoinListener;
@@ -37,6 +40,7 @@ class HCF extends PluginBase {
 
     public function onEnable(): void {
         FactionFactory::getInstance()->init();
+        KothFactory::getInstance()->init();
 
         $this->registerCommand(
             new FactionCommand("faction", "Faction commands", null, ["f"]),
@@ -51,6 +55,8 @@ class HCF extends PluginBase {
             new PlayerDeathListener(),
             new PlayerMoveListener(),
             new PlayerDeathListener(),
+            new BlockPlaceListener(),
+            new BlockBreakListener(),
             new ClaimInteractListener(),
             new ClaimChatListener()
         );

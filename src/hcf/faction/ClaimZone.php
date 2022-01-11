@@ -99,11 +99,12 @@ class ClaimZone {
 
     /**
      * @param Position $pos
+     * @param bool     $y
      *
      * @return bool
      */
-    public function isInside(Position $pos): bool {
-        return $this->asAxisAligned(false)->isVectorInside($pos) && $pos->getWorld()->getFolderName() === $this->getWorld()->getFolderName();
+    public function isInside(Position $pos, bool $y = true): bool {
+        return $this->asAxisAligned($y)->isVectorInside($pos) && $pos->getWorld()->getFolderName() === $this->getWorld()->getFolderName();
     }
 
     /**

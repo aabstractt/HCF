@@ -6,6 +6,8 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
     checkExplicitMixed: true
     checkMissingCallableSignature: true
+    typeAliases:
+        anyClosure: '\Closure(mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed) : mixed'
 
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon

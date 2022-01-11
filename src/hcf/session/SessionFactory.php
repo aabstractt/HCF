@@ -7,6 +7,7 @@ namespace hcf\session;
 use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
 use hcf\session\async\LoadSessionAsync;
+use hcf\task\QueryAsyncTask;
 use hcf\TaskUtils;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginException;
@@ -26,7 +27,7 @@ class SessionFactory {
      * @return void
      */
     public function loadPlayerSession(Player $player): void {
-        TaskUtils::runAsync(new LoadSessionAsync($player->getXuid()), function (LoadSessionAsync $query) use ($player): void {
+        TaskUtils::runAsync(new LoadSessionAsync($player->getXuid()), function (QueryAsyncTask $query) use ($player): void {
             if (!is_array($fetch = $query->getResult()) || count($fetch) === 0) {
                 $session = new Session($player->getXuid(), $player->getName(), FactionRank::MEMBER());
             } else {

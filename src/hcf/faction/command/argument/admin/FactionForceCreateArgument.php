@@ -11,7 +11,9 @@ use hcf\faction\type\FactionRank;
 use hcf\HCF;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
+use hcf\task\QueryAsyncTask;
 use hcf\TaskUtils;
+use MongoDB\Driver\Query;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -51,7 +53,7 @@ class FactionForceCreateArgument extends Argument {
             return;
         }
 
-        TaskUtils::runAsync(new SaveFactionAsync(serialize([$args[0], 0.1])), function (SaveFactionAsync $query) use ($args, $session, $sender): void {
+        TaskUtils::runAsync(new SaveFactionAsync(serialize([$args[0], 0.1])), function (QueryAsyncTask $query) use ($args, $session, $sender): void {
             if (!is_int($rowId = $query->getResult())) {
                 $sender->sendMessage(TextFormat::RED . 'An error was occurred...');
 

@@ -7,6 +7,7 @@ namespace hcf\faction\command\argument;
 use hcf\api\Argument;
 use hcf\faction\async\LoadTopFactionsAsync;
 use hcf\Placeholders;
+use hcf\task\QueryAsyncTask;
 use hcf\TaskUtils;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
@@ -20,7 +21,7 @@ class FactionTopArgument extends Argument {
      * @param array         $args
      */
     public function run(CommandSender $sender, string $commandLabel, string $argumentLabel, array $args): void {
-        TaskUtils::runAsync(new LoadTopFactionsAsync(), function (LoadTopFactionsAsync $query) use ($sender): void {
+        TaskUtils::runAsync(new LoadTopFactionsAsync(), function (QueryAsyncTask $query) use ($sender): void {
             if (!is_array($result = $query->getResult()) || count($result) === 0) {
                 $sender->sendMessage(TextFormat::RED . 'Factions not found');
 

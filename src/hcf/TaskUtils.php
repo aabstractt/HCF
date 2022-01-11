@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace hcf;
 
-use Exception;
+use DaveRandom\CallbackValidator\CallbackType;
 use hcf\task\QueryAsyncTask;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
-use pocketmine\utils\Utils;
 
 class TaskUtils {
 
@@ -82,19 +81,31 @@ class TaskUtils {
             return;
         }
 
-        try {
-            Utils::validateCallableSignature(function (QueryAsyncTask $query): void {}, $callable);
-
+        if (self::checkCallable(function (QueryAsyncTask $query): void {}, $callable)) {
             $callable($query);
-        } catch (Exception) {
-            try {
-                Utils::validateCallableSignature(function (): void {}, $callable);
-
-                $callable();
-            } catch (Exception $ex) {
-                HCF::getInstance()->getLogger()->logException($ex);
-            }
+        } else if (self::checkCallable(function (): void {}, $callable)) {
+            $callable();
+        } else {
+            Server::getInstance()->getLogger()->error("Declaration of callable must be compatible with");
         }
+    }
+
+    /**
+     * @param CallbackType|callable $signature
+     * @param callable              $subject
+     *
+     * @phpstan-param anyCallable|CallbackType $signature
+     * @phpstan-param anyCallable $subject
+     *
+     * @return bool
+     * @noinspection PhpUndefinedClassInspection
+     */
+    private static function checkCallable(CallbackType|callable $signature, callable $subject): bool {
+        if(!($signature instanceof CallbackType)){
+            $signature = CallbackType::createFromCallable($signature);
+        }
+
+        return $signature->isSatisfiedBy($subject);
     }
 
     /**

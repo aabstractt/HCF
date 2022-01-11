@@ -51,7 +51,7 @@ class ClaimChatListener implements Listener {
                 return;
             }
 
-            if ($faction !== null && $distance > $faction->getBalance()) {
+            if ($claimZone->getFactionRowId() !== -1 && $faction !== null && $distance > $faction->getBalance()) {
                 $player->sendMessage(Placeholders::replacePlaceholders('FACTION_NOT_ENOUGH_BALANCE'));
 
                 return;
@@ -61,9 +61,13 @@ class ClaimChatListener implements Listener {
 
             $player->getInventory()->remove(VanillaItems::GOLDEN_HOE());
 
-            if ($faction === null) {
+            if ($claimZone->getFactionRowId() === -1) {
                 KothFactory::getInstance()->addKoth($claimZone->specify, $claimZone);
 
+                return;
+            }
+
+            if ($faction === null) {
                 return;
             }
 

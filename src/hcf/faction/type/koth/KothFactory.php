@@ -195,7 +195,7 @@ class KothFactory {
 
         if ($except !== null) {
             $koths = array_filter($koths, function (string $kothName) use ($except): bool {
-                return $kothName === $except;
+                return $kothName !== $except;
             });
         }
 

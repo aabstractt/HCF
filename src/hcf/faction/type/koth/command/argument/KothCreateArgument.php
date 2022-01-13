@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace hcf\koth\command\argument;
+namespace hcf\faction\type\koth\command\argument;
 
 use hcf\command\Argument;
 use hcf\faction\ClaimZone;
+use hcf\faction\type\koth\KothFactory;
 use hcf\HCF;
-use hcf\koth\KothFactory;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use pocketmine\command\CommandSender;

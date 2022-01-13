@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace hcf\listener;
 
-use hcf\koth\KothFactory;
+use hcf\faction\type\koth\KothFactory;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\Listener;
 

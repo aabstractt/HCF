@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace hcf\koth\command;
+namespace hcf\faction\type\koth\command;
 
 use hcf\command\Command;
-use hcf\koth\command\argument\KothCreateArgument;
-use hcf\koth\command\argument\KothListArgument;
-use hcf\koth\command\argument\KothStartArgument;
-use hcf\koth\command\argument\KothTimeArgument;
+use hcf\faction\type\koth\command\argument\KothCreateArgument;
+use hcf\faction\type\koth\command\argument\KothListArgument;
+use hcf\faction\type\koth\command\argument\KothStartArgument;
+use hcf\faction\type\koth\command\argument\KothTimeArgument;
 use pocketmine\lang\Translatable;
 
 class KothCommand extends Command {

@@ -21,11 +21,10 @@ class TaskUtils {
     protected static string $dbname;
     /** @var int */
     protected static int $port;
-
     /**
-     * @var callable[]
-     * @template T of QueryAsyncTask
-     * @phpstan-var array<string, callable<T>>
+     * @phpstan-var array<string, anyCallable>
+     * @phpstan-var array<string, callableVoid>
+     * @noinspection PhpUndefinedClassInspection
      */
     private static array $callbacks = [];
 
@@ -48,14 +47,14 @@ class TaskUtils {
 
     /**
      * @param QueryAsyncTask $query
-     * @param callable|null  $callback
+     * @param callable|null  $subject
      *
-     * @template T of QueryAsyncTask
-     * @phpstan-param callable(T) : void $callback
+     * @phpstan-param anyCallable|callableVoid|null $subject
+     * @noinspection PhpUndefinedClassInspection
      */
-    public static function runAsync(QueryAsyncTask $query, ?callable $callback = null): void {
-        if ($callback !== null) {
-            self::$callbacks[spl_object_hash($query)] = $callback;
+    public static function runAsync(QueryAsyncTask $query, ?callable $subject = null): void {
+        if ($subject !== null) {
+            self::$callbacks[spl_object_hash($query)] = $subject;
         }
 
         if (!isset(self::$host)) {
@@ -94,7 +93,7 @@ class TaskUtils {
      * @param CallbackType|callable $signature
      * @param callable              $subject
      *
-     * @phpstan-param anyCallable|CallbackType $signature
+     * @phpstan-param anyCallable|callableVoid|CallbackType $signature
      * @phpstan-param anyCallable $subject
      *
      * @return bool

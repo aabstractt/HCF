@@ -6,7 +6,7 @@ namespace hcf\listener\type;
 
 use hcf\faction\async\AddClaimAsync;
 use hcf\faction\FactionFactory;
-use hcf\koth\KothFactory;
+use hcf\faction\type\koth\KothFactory;
 use hcf\Placeholders;
 use hcf\session\SessionFactory;
 use hcf\TaskUtils;

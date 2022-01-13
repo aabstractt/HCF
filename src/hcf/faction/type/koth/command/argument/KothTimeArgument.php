@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace hcf\koth\command\argument;
+namespace hcf\faction\type\koth\command\argument;
 
 use hcf\command\Argument;
-use hcf\koth\KothFactory;
+use hcf\faction\type\koth\KothFactory;
 use hcf\Placeholders;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;

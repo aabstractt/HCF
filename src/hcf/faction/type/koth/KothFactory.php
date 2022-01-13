@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace hcf\koth;
+namespace hcf\faction\type\koth;
 
 use hcf\faction\ClaimZone;
 use hcf\HCF;

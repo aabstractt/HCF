@@ -6,8 +6,10 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
     checkExplicitMixed: true
     checkMissingCallableSignature: true
+    treatPhpDocTypesAsCertain: false
     typeAliases:
-        anyClosure: '\Closure(mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed, mixed) : mixed'
+        anyCallable: 'callable(\hcf\task\QueryAsyncTask) : void'
+        callableVoid: 'callable() : void'
 
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon

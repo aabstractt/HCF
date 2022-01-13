@@ -30,7 +30,7 @@ class FeedCommand extends Command {
             return;
         }
 
-        $sender->setHealth($sender->getMaxHealth());
+        $sender->getHungerManager()->setFood($sender->getHungerManager()->getMaxFood());
 
         $sender->sendMessage(Placeholders::replacePlaceholders('HEALED_SUCCESSFULLY'));
     }

@@ -43,7 +43,7 @@ class Session {
         private int $factionRowId = -1,
         private ?string $lastFactionEdit = null
     ) {
-        $this->scoreboardBuilder = new ScoreboardBuilder($this, HCF::getInstance()->getString('scoreboard.title') ?? 'HCF', ScoreboardBuilder::SIDEBAR, HCF::getInstance()->getArray('scoreboard.lines'));
+        $this->scoreboardBuilder = new ScoreboardBuilder($this, TextFormat::colorize(HCF::getInstance()->getString('scoreboard.title') ?? 'HCF'), ScoreboardBuilder::SIDEBAR, HCF::getInstance()->getArray('scoreboard.lines'));
     }
 
     /**

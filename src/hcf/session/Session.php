@@ -8,6 +8,7 @@ use hcf\faction\ClaimZone;
 use hcf\faction\Faction;
 use hcf\faction\FactionFactory;
 use hcf\faction\type\FactionRank;
+use hcf\HCF;
 use hcf\session\async\SaveSessionAsync;
 use hcf\session\scoreboard\ScoreboardBuilder;
 use hcf\TaskUtils;
@@ -42,7 +43,7 @@ class Session {
         private int $factionRowId = -1,
         private ?string $lastFactionEdit = null
     ) {
-        $this->scoreboardBuilder = new ScoreboardBuilder($this, ScoreboardBuilder::SIDEBAR);
+        $this->scoreboardBuilder = new ScoreboardBuilder($this, HCF::getInstance()->getString('scoreboard.title') ?? 'HCF', ScoreboardBuilder::SIDEBAR, HCF::getInstance()->getArray('scoreboard.lines'));
     }
 
     /**

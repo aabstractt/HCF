@@ -24,18 +24,19 @@ factions:
     - 'Spawn'
 
 scoreboard:
-  title: "&6&lHCF"
+  title: "&6&lValixHCF"
   lines:
-    - "&f"
-    - "Claim: {%0}"
-    - "Spawn Tag: {%1}<display={%2}"
-    - "SOTW: {%3} <display=SOTW"
-    - "EOTW: {%4} <display=EOTW"
-    - "&d"
-    - "server.com"
-  mod-lines:
-    - "Staff Mode"
-  koth-lines:
-    normal: ""
-    special: ""
-  custom-timer: "{%0}: {%1}"
+    default:
+      - '&f'
+      - '&c&lCombatTag: &r&c%spawntag-time%<display=%spawntag-enabled%'
+      - '%koth-lines%'
+      - ''
+      - '%mod-lines%'
+      - ''
+      - '&7valixhcf.net'
+    mod-lines:
+      - "Staff Mode"
+    koth-lines:
+      normal: '&9&l%koth-name%: &r&8%koth-time%<display=%koth-enabled%'
+    custom-timer:
+      - "{%0}: {%1}"

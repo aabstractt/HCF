@@ -48,7 +48,7 @@ class Placeholders {
      * @return string
      */
     public static function timeString(int $time): string {
-        return $time <= 60 ? $time . 's' : gmdate("H:i:s", $time);
+        return $time > 60 ? ($time <= 60 * 60 ? gmdate('i:s', $time) : gmdate("H:i:s", $time)) : $time . 's';
     }
 
     /**

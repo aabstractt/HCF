@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace hcf\session\scoreboard;
 
+use hcf\faction\type\koth\KothFactory;
+use hcf\Placeholders;
 use hcf\session\Session;
 use pocketmine\network\mcpe\protocol\RemoveObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetDisplayObjectivePacket;
@@ -12,8 +14,6 @@ use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
 use pocketmine\utils\TextFormat;
 
 class ScoreboardBuilder {
-
-    private string $title = 'HCF';
 
     /** @var string */
     public const LIST = 'list';
@@ -28,12 +28,16 @@ class ScoreboardBuilder {
 
     /**
      * @param Session $session
+     * @param string  $title
      * @param string  $displaySlot
+     * @param array   $scoreboardLines
      * @param int     $sortOrder
      */
     public function __construct(
         private Session $session,
+        private string $title,
         private string $displaySlot,
+        private array $scoreboardLines,
         private int $sortOrder = self::ASCENDING
     ) {
         $this->objectiveName = uniqid('', true);
@@ -47,21 +51,66 @@ class ScoreboardBuilder {
         }
 
         $lines = [];
-        $space = '&7&m------------------';
 
-        $this->addLine($lines, '&a', '&6' . date('d/m/Y H:i'), '&b' . $space, '&7serverip.com');
+        foreach ($this->scoreboardLines['default'] ?? [] as $line) {
+            if (!is_string($str = str_replace('%', '', $line))) {
+                continue;
+            }
+
+            $data = $this->scoreboardLines[$str] ?? [];
+
+            if (count($data) === 0) {
+                $lines[] = $line;
+
+                continue;
+            }
+
+            $lines = array_merge($lines, $data);
+        }
 
         $this->removeLines();
 
-        foreach ($lines as $slot => $line) {
-            $this->setLine($slot, $line);
+        $slot = 1;
+        foreach ($lines as $line) {
+            if (($newLine = self::replacePlaceHolders($line)) === null) {
+                continue;
+            }
+
+            $this->setLine($slot++, $newLine);
         }
     }
 
-    private function addLine(array &$currentLines, string... $lines): void {
-        foreach ($lines as $line) {
-            $currentLines[] = TextFormat::colorize($line);
+    /**
+     * @param string $text
+     *
+     * @return string|null
+     */
+    private static function replacePlaceHolders(string $text): ?string {
+        $placeholders = [
+            '%koth-enabled%' => ($kothName = KothFactory::getInstance()->getKothName()) !== null,
+            '%koth-name%' => ($kothName ?? ''),
+            '%koth-time%' => Placeholders::timeString(KothFactory::getInstance()->getCapturingTime()),
+            '%spawntag-enabled%' => true,
+            '%spawntag-time%' => Placeholders::timeString(30)
+        ];
+
+        foreach ($placeholders as $search => $replace) {
+            $replace = strval($replace);
+
+            $text = str_replace($search, $replace, $text);
         }
+
+        return self::shouldDisplay($text);
+    }
+
+    private static function shouldDisplay(string $text): ?string {
+        if (!str_contains($text, '<display=')) {
+            return $text;
+        }
+
+        $split = explode("<display=", $text);
+
+        return $split[1] === '1' ? $split[0] : null;
     }
 
     public function removePlayer(): void {

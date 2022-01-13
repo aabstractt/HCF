@@ -54,6 +54,13 @@ class KothFactory {
     }
 
     /**
+     * @return int
+     */
+    public function getCapturingTime(): int {
+        return $this->capturingTime;
+    }
+
+    /**
      * @param string    $kothName
      * @param ClaimZone $claimZone
      * @param int       $time

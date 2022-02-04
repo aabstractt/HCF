@@ -173,8 +173,6 @@ class Session {
         $nbt = $item->getNamedTag();
         $nbt->setString('custom_item', $value);
 
-        $item->setNamedTag($nbt);
-
         $this->getInstanceNonNull()->getInventory()->addItem($item->setNamedTag($nbt)->setCustomName(TextFormat::colorize('&r&6&lClaim Tool')));
     }
 
